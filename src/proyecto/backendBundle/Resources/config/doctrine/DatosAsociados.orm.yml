@@ -1,0 +1,36 @@
+proyecto\backendBundle\Entity\DatosAsociados:
+    type: entity
+    table: datos_asociados
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        idPregunta:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: id_pregunta
+    manyToOne:
+        idFragmento:
+            targetEntity: Fragmento
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_fragmento:
+                    referencedColumnName: id
+            orphanRemoval: false
+        idParticipante:
+            targetEntity: Participante
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_participante:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

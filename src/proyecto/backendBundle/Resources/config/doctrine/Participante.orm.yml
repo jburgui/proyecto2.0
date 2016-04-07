@@ -1,0 +1,12 @@
+proyecto\backendBundle\Entity\Participante:
+    type: entity
+    table: participante
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+    lifecycleCallbacks: {  }

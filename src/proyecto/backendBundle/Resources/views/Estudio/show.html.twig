@@ -1,0 +1,156 @@
+<div id="frame" class="marginBottom">
+    <h1>Estudio</h1>
+
+    <table class="tabla record_properties row-fluid">
+        <tbody>
+            <tr>
+                <th>Id: </th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre: </th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Número de partes: </th>
+                <td>{{ entity.numSecciones }}</td>
+            </tr>
+            <tr>
+                <th>Número de datos de estudio: </th>
+                <td>{{ entity.numDatosEstudio }}</td>
+            </tr>
+            <tr>
+                <th>Descripción: </th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            {#<tr>
+                <th>Activa</th>
+                <td>{{ entity.activa }}</td>
+            </tr>#}
+        </tbody>
+    </table>
+    
+    
+    
+    <ul class="record_actions form-actions">
+        <li>
+            <form>
+                <button class="btn-info" onclick="cargarEnGestion('{{ path('estudio') }}')">
+                    Volver a la lista
+                </button>
+            </form>
+        </li>
+        {% if admin==true %}  
+            <li>
+                <form id="eliminar" action="{{ path('estudio_delete', { 'id': entity.id }) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    {{ form_widget(delete_form) }}
+                    <button id="submitEliminarEstudio" class="cargando hide" type="submit"></button>
+                    <button id="eliminarEstudio" class="btn-inverse" type="button">Eliminar Estudio</button>
+                </form>
+            </li>
+            <li>
+                <form method="post"  action="{{ path('estudio_eliminar_datos') }}" id="eliminarDatos" name="eliminarDatos">
+                    <input type="hidden" name="id" value="{{ entity.id }}" />
+                    <button id="submitEliminarResultados" class="cargando hide" type="submit"></button>
+                    <button id="eliminarResultados" class="btn-inverse " type="button">Eliminar resultados del estudio</button>
+                </form>
+            </li>
+        {%endif%}
+        <li>
+             <div id="exportarExcel">
+                 <form method="post"  action="{{ path('estudio_exportar_parte') }}" id="exportar" ><!--target="_blank"--> 
+                    <label class="label">Exportar a Excel los resultados de la siguiente parte del estudio:</label>
+                    <input type="hidden" name="id" value="{{ entity.id }}" />
+                    <select id="parte" name="parte">
+                        {% for parte in partes %}
+                              <option value="{{ loop.index }}" >{{ parte }}</option> 
+                        {% endfor %}
+                    </select>
+                    <button class="" type="submit" style="vertical-align: top;">Exportar</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+    
+  
+    
+    <div id="dialog-eliminar" title="Mensaje de confirmación">
+        ¿Seguro que quiere eliminar este estudio?
+    </div>​
+    <div id="dialog-eliminar-resultados" title="Mensaje de confirmación">
+        ¿Realmente desea eliminar los resultados del estudio?
+    </div>​
+    
+    {% if alertDatosEliminados is defined and alertDatosEliminados %}
+        {% if alertDatosEliminados == 1 %}
+            <div id="dialog-resultados-eliminados" title="Mensaje de informacion">
+                Datos de Estudio borrados correctamente
+            </div>​
+        {%endif%}
+    {%endif%}
+    <script>
+        $("#dialog-eliminar").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons : {
+                 "Confirmar" : function() {
+                     $("#submitEliminarEstudio").click();
+                     $(this).dialog("close");
+                     return true;
+                 },
+                 "Cancelar" : function() {
+                   $(this).dialog("close");
+                   cargarYmostrar();
+                   return false;
+                 }
+             }
+        });
+        $("#eliminarEstudio").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog-eliminar").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+        
+        $("#dialog-eliminar-resultados").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons : {
+                 "Confirmar" : function() {
+                     $("#submitEliminarResultados").click();
+                     $(this).dialog("close");
+                     return true;
+                 },
+                 "Cancelar" : function() {
+                   $(this).dialog("close");
+                   cargarYmostrar();
+                   return false;
+                 }
+             }
+        });
+        $("#eliminarResultados").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog-eliminar-resultados").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+        
+        cargarYmostrar();
+        var params= {target:'.gestion'}; 
+        $('#eliminarDatos').ajaxForm(params); 
+        {% if alertDatosEliminados is defined and alertDatosEliminados %}
+            {% if alertDatosEliminados == 1 %}
+                $("#dialog-resultados-eliminados").dialog({
+                    autoOpen: true,
+                    modal: true,
+                    buttons : {
+                         "Aceptar" : function() {
+                             $(this).dialog("close");
+                         }
+                     }
+                });
+                $('.ui-dialog-titlebar-close').remove();
+            {%endif%}
+        {%endif%}
+    </script>
+</div>
+

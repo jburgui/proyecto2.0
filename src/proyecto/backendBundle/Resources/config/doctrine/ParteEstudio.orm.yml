@@ -1,0 +1,68 @@
+proyecto\backendBundle\Entity\ParteEstudio:
+    type: entity
+    table: parte_estudio
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        nombre:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        numOrden:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_orden
+        numPreguntas:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_preguntas
+        titulo:
+            type: string
+            length: 255
+            fixed: false
+            nullable: true
+        guardarTiempoRespuesta:
+            type: boolean
+            nullable: true
+            column: guardar_tiempo_respuesta
+        numPreguntasDePrueba:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_preguntas_de_prueba
+    manyToOne:
+        idEstudio:
+            targetEntity: Estudio
+            cascade: {  }
+            inversedBy: partesEstudio
+            joinColumns:
+                id_estudio:
+                    referencedColumnName: id
+            orphanRemoval: false
+        idTipoPregunta:
+            targetEntity: TipoPregunta
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_pregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        pantallasBienvenida:
+            targetEntity: pantallaBienvenida
+            mappedBy: idParteEstudio
+            cascade: [persist]
+        preguntas:
+            targetEntity: pregunta
+            mappedBy: idParteEstudio
+            cascade: [persist]
+    lifecycleCallbacks: {  }

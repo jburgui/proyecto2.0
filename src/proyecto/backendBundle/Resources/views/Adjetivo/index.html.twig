@@ -1,0 +1,189 @@
+<div id="frame"  class="marginBottom">
+    <h1>Lista de Adjetivos</h1>
+    <div class="form-filtro">
+        <form id="filtrar" action="{{ path('adjetivo') }}" method="post">
+            <div class="input-append">
+                <input  id="filtro" value="{{ filtro }}" placeholder="Filtar..." name="filtro" autofocus/>
+                <button type="submit" class='btn add-on texto-negro cargando'>
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+            <a href="#" onclick="cargarEnGestion('{{ path('adjetivo') }}');">Eliminar filtro</a>
+        </form>
+    </div>
+    <table  id="tabla1" class="records_list row-fluid display table">
+        <thead>
+            <tr>
+                <th>
+                    {{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}
+                    {% if sort=='a.id' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.nombre') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Nombre', 'a.nombre') }}
+                    {% if sort=='a.nombre' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.tipo') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Tipo', 'a.tipo') }}
+                    {% if sort=='a.tipo' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.frecTeorica') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Frec. teórica', 'a.frecTeorica') }}
+                    {% if sort=='a.frecTeorica' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.numLetras') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Número de letras', 'a.numLetras') }}
+                    {% if sort=='a.numLetras' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.numSilabas') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Número de sílabas', 'a.numSilabas') }}
+                    {% if sort=='a.numSilabas' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.categoria') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Categoría', 'a.categoria') }}
+                    {% if sort=='a.categoria' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.frecUsoComoAdj') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Frec. uso como adjetivo', 'a.frecUsoComoAdj') }}
+                    {% if sort=='a.frecUsoComoAdj' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.numSignificados') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Número de significados', 'a.numSignificados') }}
+                    {% if sort=='a.numSignificados' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th style="min-width: 160px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in pagination %}
+            <tr {% if loop.index is odd %}class="impar"{% endif %}>
+                <td ><a href="#" onclick="cargarEnGestion('{{ path('adjetivo_show', { 'id': article.id }) }}');">{{ article.id }}</a></td>
+                <td>{{ article.nombre }}</td>
+                <td>{{ article.tipo }}</td>
+                <td>{{ article.frecTeorica }}</td>
+                <td>{{ article.numLetras }}</td>
+                <td>{{ article.numSilabas }}</td>
+                <td>{{ article.categoria }}</td>
+                <td>{{ article.frecUsoComoAdj }}</td>
+                <td>{{ article.numSignificados }}</td>
+                <td>
+                    <div>
+                        <a class="btn btn-mini" href="#" onclick="cargarEnGestion('{{ path('adjetivo_show', { 'id': article.id }) }}');"><i class="icon-search">&nbsp; </i>&nbsp; ver</a>
+                        <a class="btn btn-mini" href="#" onclick="cargarEnGestion('{{ path('adjetivo_edit', { 'id': article.id }) }}');"><i aria-hidden="true" class="icon-pencil">&nbsp; </i>&nbsp; editar</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    <ul class="row-fluid" style="display: inline-block">
+        <li >
+            <a class="btn btn-primary" href="#" onclick="cargarEnGestion('{{path('adjetivo_new')}}');">
+                <i class="icon-new"> </i>  &nbsp; Crear nuevo adjetivo
+            </a>
+        </li>
+    </ul>
+   <script> 
+        //para que los enlaces se carguen en gestion
+        $(document).ready(function(){
+            $(".sortable,.asc,.desc").on('click', function(event){
+                event.preventDefault();
+                //si hay filtro se añade al final del enlace
+                var filtro = document.getElementById('filtro').value;
+                var href = $(this).attr('href');
+                if(filtro!=''){
+                    href = href + '&filtro=' + filtro;
+                }
+                cargarEnGestion(href);
+            } );
+            $(".pagination span a").on('click', function(event){
+                event.preventDefault();
+                var filtro = document.getElementById('filtro').value;
+                if(filtro=='' || (/filtro/.test($(this).attr("href")))){
+                    cargarEnGestion($(this).attr("href"));
+                }else{
+                    cargarEnGestion($(this).attr("href")+ '?filtro=' + filtro);
+                }
+            } );
+        });
+    </script>
+    <script>
+        cargarYmostrar();
+    </script>
+   
+</div>

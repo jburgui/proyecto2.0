@@ -1,0 +1,114 @@
+<div id="frame" class="marginBottom">
+    <h1>Lista de Informes</h1>
+    <div class="form-filtro">
+        <form id="filtrar" action="{{ path('informe') }}" method="post">
+            <div class="input-append">
+                <input  id="filtro" value="{{ filtro }}" placeholder="Filtar..." name="filtro" autofocus/>
+                <button type="submit" class='btn add-on texto-negro cargando'>
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+            <a href="#" onclick="cargarEnGestion('{{ path('informe') }}');">Eliminar filtro</a>
+        </form>
+    </div>
+    <table  id="tabla1" class="records_list row-fluid display table">
+        <thead>
+            <tr>
+                {# sorting of properties based on query components #}
+                <th>
+                    {{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}
+                    {% if sort=='a.id' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('r.nombre') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Parte', 'r.nombre') }}
+                    {% if sort=='r.nombre' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.tituloGrafico') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'título del Grafico', 'a.tituloGrafico') }}
+                    {% if sort=='a.tituloGrafico' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                
+                <th style="min-width: 160px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in pagination %}
+            <tr {% if loop.index is odd %}class="impar"{% endif %}>
+                <td ><a href="#" onclick="cargarEnGestion('{{ path('informe_show', { 'id': article.id }) }}');">{{ article.id }}</a></td>
+                <td>{{ article.idParteEstudio }}</td>
+                
+                <td>{{ article.tituloGrafico }}</td>
+                <td>
+                    <div>
+                        <a class="btn btn-mini" href="#" onclick="cargarEnGestion('{{ path('informe_show', { 'id': article.id }) }}');"><i class="icon-search">&nbsp; </i>&nbsp; ver</a>
+                        <a class="btn btn-mini" href="#" onclick="cargarEnGestion('{{ path('informe_edit', { 'id': article.id }) }}');"><i aria-hidden="true" class="icon-pencil">&nbsp; </i>&nbsp; editar</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    <ul class="row-fluid" style="display: inline-block">
+        <li >
+            <a  class="btn btn-primary" href="#" onclick="cargarEnGestion('{{path('informe_new')}}');">
+                <i class="icon-new"> </i>  &nbsp; Crear nuevo informe
+            </a>
+        </li>
+    </ul>
+    <script> 
+        //para que los enlaces se carguen en gestion
+        $(document).ready(function(){
+            $(".sortable,.asc,.desc").on('click', function(event){
+                event.preventDefault();
+                //si hay filtro se añade al final del enlace
+                var filtro = document.getElementById('filtro').value;
+                var href = $(this).attr('href');
+                if(filtro!=''){
+                    href = href + '&filtro=' + filtro;
+                }
+                cargarEnGestion(href);
+            } );
+            $(".pagination span a").on('click', function(event){
+                event.preventDefault();
+                var filtro = document.getElementById('filtro').value;
+                if(filtro=='' || (/filtro/.test($(this).attr("href")))){
+                    cargarEnGestion($(this).attr("href"));
+                }else{
+                    cargarEnGestion($(this).attr("href")+ '?filtro=' + filtro);
+                }
+            } );
+            
+            cargarYmostrar();
+            
+        });
+    </script>
+
+</div>

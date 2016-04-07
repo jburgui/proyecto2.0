@@ -1,0 +1,40 @@
+proyecto\frontendBundle\Entity\Informe:
+    type: entity
+    table: informe
+    indexes:
+        id_estudio:
+            columns:
+                - id_parte_estudio
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        tituloGrafico:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+            column: titulo_grafico
+    oneToMany:
+        columnas:
+            targetEntity: Columna
+            mappedBy: idInforme
+            cascade: [persist]
+    manyToOne:
+        idParteEstudio:
+            targetEntity: ParteEstudio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_parte_estudio:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

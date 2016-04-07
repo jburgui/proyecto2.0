@@ -1,0 +1,145 @@
+{% extends '::base.html.twig' %}
+
+{% block header %}
+    <div class="page-header" style="text-align: center;">
+        <a id="logo">
+            <img src="{{asset('bundles/proyectobackend/images/cabecera2.png')}}" alt="" style="max-height: 150px;">
+        </a>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/estilos.css')}}" />
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/datatable.css')}}" />
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/jquery-ui.css')}}" />
+{% endblock %}
+{% block javascripts %}
+    
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{asset('bundles/proyectobackend/js/utiles.js')}}"></script>
+    <script type="text/javascript" src="{{asset('bundles/proyectobackend/js/jquery.form.js')}}"></script>
+    <script type="text/javascript" src="{{asset('bundles/proyectobackend/js/jquery.dataTables.js')}}"></script>
+    <script type="text/javascript" src="{{asset('bundles/proyectobackend/js/bootmetro-charms.js')}}"></script>
+
+{% endblock %}
+
+{% block center %}
+    <div class="row-fluid">
+        <div class="span10 offset1" style="position: relative;" onload="mostrarid('charms')">
+            {% block menu %}
+            <a id="menu" href="#" onclick="mostrarid('charms')">
+                <b class="icon-arrow-down"></b>Menú
+            </a>
+            <div class="metro win-ui" id="charms" >
+                <a href="#" class="close-charms win-comman" onclick="ocultarid('charms')">
+                    <i class="icon-arrow-up"></i>Cerrar
+                </a>
+                <div id="theme-charms-section" class="charms-section">
+                    <nav class="row-fluid">
+                        <menu class="tile square" onclick="ocultarid('charms');cargarEnGestion('{{path('adjetivo')}}');">
+                            <div class="image-wrapper">
+                                <img src="{{asset('bundles/proyectobackend/images/adjetivos.png')}}" alt="">
+                            </div>
+                            <div class="app-label">Gestión de adjetivos</div>
+                        </menu>
+
+                        <menu class="tile square" onclick="ocultarid('charms');cargarEnGestion('{{path('fragmento')}}');">
+                            <div class="image-wrapper">
+                                <img src="{{asset('bundles/proyectobackend/images/fragmentos.png')}}" alt="">
+                            </div>
+                            <div class="app-label">Gestión de fragmentos</div>
+                        </menu>
+                        <menu class="tile square" onclick="ocultarid('charms');cargarEnGestion('{{path('estudio')}}');">
+                            <div class="image-wrapper">
+                                <img src="{{asset('bundles/proyectobackend/images/estudio.png')}}" alt="">
+                            </div>
+                            <div class="app-label">Gestión de estudios</div>
+                        </menu>
+                        <menu class="tile square" onclick="ocultarid('charms');cargarEnGestion('{{path('informe')}}');">
+                            <div class="image-wrapper">
+                                <img src="{{asset('bundles/proyectobackend/images/informes.png')}}" alt="">
+                            </div>
+                            <div class="app-label">Gestión de informes</div>
+                        </menu>
+                        {% if admin==true %}    
+                            <menu class="tile square" onclick="ocultarid('charms');cargarEnGestion('{{path('usuario')}}');">
+                                <div class="image-wrapper">
+                                    <img src="{{asset('bundles/proyectobackend/images/UserAccounts.png')}}" alt="">
+                               </div>
+                                <div class="app-label">Gestión de usuarios</div>
+                            </menu>
+                        {% endif %}
+                            <menu id="logout"  class="tile square" style="right: 0px">
+                            <div class="image-wrapper">
+                                <img src="{{asset('bundles/proyectobackend/images/Power-ShutDown.png')}}" alt="">
+                            </div>
+                            <div class="app-label">Salir </div>
+                        </menu>
+
+                    </nav>
+                </div>
+            </div>
+            {% endblock %}  
+            <div id="gestion" class="gestion">
+                {% block gestion %}{% endblock %}     
+            </div>
+            {% block cargando %}    
+            <div id="cargando">
+                <h3>Cargando página ...</h3> 
+                <div class="row-fluid">
+                    <img src="{{asset('bundles/proyectobackend/images/cargando.gif')}}" alt="">
+                </div>
+                <p>Sea paciente, los datos demoran en ser importados.</p>
+            </div>  
+            {% endblock %}
+        </div>
+    </div>
+    <div id="dialog" title="Mensaje de confirmación">
+        ¿Seguro que quiere volver a la página principal? La sesión se cerrará.
+    </div>​
+    <script>
+        //al pinchar fuera del menu este desaparecerá.
+        $('#charms').mouseout(function(){
+            $('html').click(function(){
+            ocultarid('charms');
+            $('html').off('click');
+            });
+        });
+        //cuando se da al botón menu se vuelve a activar el evento anterior
+        $('#menu').click(function(){
+            $('#charms').mouseout(function(){
+                $('html').click(function(){
+                ocultarid('charms');
+                $('html').off('click');
+                });
+            });
+        });
+        //dialogo para confirmar al pulsar el logo de que se desea salir a la página principal cerrando la sesión
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons : {
+                 "Confirmar" : function() {
+                     location.href='{{path('logout')}}';
+                 },
+                 "Cancelar" : function() {
+                   $(this).dialog("close");
+                 }
+             }
+        });
+        $("#logo").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+        $("#logout").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+    </script>
+    
+{% endblock %}
+{% block footer %}    
+{% endblock %}
+      

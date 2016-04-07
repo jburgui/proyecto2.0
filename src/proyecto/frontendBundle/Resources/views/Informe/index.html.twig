@@ -1,0 +1,94 @@
+{% extends 'proyectofrontendBundle:Default:index.html.twig' %}
+
+{% block center %}
+    <div id="frame" class="container-fluid">
+        <h1>Lista de Informes</h1>
+        <div class="form-filtro">
+            <form id="filtrar" action="{{ path('informepublico') }}" method="post">
+                <div class="input-append">
+                    <input  id="filtro" value="{{ filtro }}" placeholder="Filtar..." name="filtro" autofocus/>
+                    <button type="submit" class='btn add-on texto-negro cargando'>
+                        <i class="icon-search"></i>
+                    </button>
+                </div>
+                <a href="{{ path('informepublico') }}">Eliminar filtro</a>
+            </form>
+        </div>
+        <table  id="tabla1" class="records_list row-fluid display table">
+            <thead>
+                <tr>
+                    {# sorting of properties based on query components #}
+                    <th>
+                        {{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}
+                        {% if sort=='a.id' %}
+                            {% if direction=='asc' %}
+                                <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                            {% else %}
+                                <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                            {% endif %}
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                        {% endif %}
+                    </th>
+                    <th{% if pagination.isSorted('r.nombre') %} class="sorted"{% endif %}>
+                        {{ knp_pagination_sortable(pagination, 'Parte', 'r.nombre') }}
+                        {% if sort=='r.nombre' %}
+                            {% if direction=='asc' %}
+                                <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                            {% else %}
+                                <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                            {% endif %}
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                        {% endif %}
+                    </th>
+                    <th{% if pagination.isSorted('a.tituloGrafico') %} class="sorted"{% endif %}>
+                        {{ knp_pagination_sortable(pagination, 'título del Grafico', 'a.tituloGrafico') }}
+                        {% if sort=='a.tituloGrafico' %}
+                            {% if direction=='asc' %}
+                                <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                            {% else %}
+                                <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                            {% endif %}
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                        {% endif %}
+                    </th>
+
+                    <th style="min-width: 160px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for article in pagination %}
+                <tr {% if loop.index is odd %}class="impar"{% endif %}>
+                    <td ><a href="{{ path('informepublico_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
+                    <td>{{ article.idParteEstudio }}</td>
+
+                    <td>{{ article.tituloGrafico }}</td>
+                    <td>
+                        <div>
+                            <a class="btn btn-mini" href="{{ path('informepublico_show', { 'id': article.id }) }}"><i class="icon-search">&nbsp; </i>&nbsp; ver</a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {# display navigation #}
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+        
+    </div>
+    <ul class="record_actions">
+        <li>
+            <button class="btn-inverse" onClick="location.href='{{ path('homepage') }}'">
+                    <i class="icon-exit"> </i> Salir 
+            </button>
+        </li>
+    </ul>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

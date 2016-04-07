@@ -1,0 +1,73 @@
+<div id="frame" class="marginBottom">
+    <h1>Informe</h1>
+
+    <table class="tabla record_properties row-fluid">
+        <tbody>
+            <tr>
+                <th>Id: </th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre de la parte a la que pertenece el informe: </th>
+                <td>{{ entity.idParteEstudio }}</td>
+            </tr>
+            <tr>
+                <th>Titulo del Gráfico: </th>
+                <td>{{ entity.tituloGrafico }}</td>
+            </tr>
+            <tr>
+                <th>Número de columnas: </th>
+                <td>{{ numColumnas }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+   <ul class="record_actions form-actions">
+        <li>
+            <form>
+                <button class="btn-info" onclick="cargarEnGestion('{{ path('informe') }}')">
+                    Volver a la lista
+                </button>
+            </form>
+        </li>
+        {% if admin==true %}  
+            <li>
+                <form id="eliminar" action="{{ path('informe_delete', { 'id': entity.id }) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    {{ form_widget(delete_form) }}
+                    <button class="cargando" type="submit" >Eliminar Informe</button>
+                </form>
+            </li>
+        {% endif %}
+        <li>
+            <button class="btn-inverse" onclick="cargarEnGestion('{{ path('informe_edit', { 'id': entity.id }) }}');">
+                Editar
+            </button>
+        </li>
+    </ul>
+    <div id="dialog-eliminar" title="Mensaje de confirmación">
+        ¿Seguro que quiere eliminar este informe?
+    </div>​
+    <script>
+        $("#dialog-eliminar").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons : {
+                 "Confirmar" : function() {
+                     return true;
+                 },
+                 "Cancelar" : function() {
+                   $(this).dialog("close");
+                   cargarYmostrar();
+                   return false;
+                 }
+             }
+        });
+        $(".cargando").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog-eliminar").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+        cargarYmostrar();
+    </script>
+</div>      

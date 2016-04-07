@@ -1,0 +1,784 @@
+{% extends 'proyectobackendBundle:Default:index.html.twig' %}
+    
+{% block stylesheets %}
+    {{ parent() }}
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/jquery-ui.css')}}" />
+    
+{% endblock %}
+
+
+{% block head %}{% endblock %}
+{% block header %}{% endblock %}
+{% block fondo %}{% endblock %}
+{% block finfondo %}{% endblock %}
+{% form_theme form _self %}
+
+{#Bloque de las distracciones#}
+{% block _Estudio_distracciones_entry_row %}
+    {% spaceless %}
+                <div class="offset1 span5 well distraccion">
+                    <button type="button" class="close close6">&times;</button>
+                    <div class="control-group {% if form.numOrden.vars.errors|length %}error{% endif %}">
+                        {{ form_label(form.numOrden) }}
+                        <div class="controls">
+                            {{ form_widget(form.numOrden) }}        
+                            <span class="help-inline">{{ form_errors(form.numOrden) }} </span>       
+                        </div>
+                    </div>
+                </div>
+     {% endspaceless %}
+{% endblock %}
+
+{#Bloque de las opciones de respuesta#}
+{% block _Estudio_partesEstudio_entry_preguntas_entry_subpreguntas_entry_opcionesRespuesta_entry_row %}
+    {% spaceless %}
+                <div class="offset1 well opcionRespuesta">
+                    <button type="button" class="close close5">&times;</button>
+                    <div class="control-group {% if form.valor.vars.errors|length %}error{% endif %}">
+                        {{ form_label(form.valor) }}
+                        <div class="controls">
+                            {{ form_widget(form.valor) }}        
+                            <span class="help-inline">{{ form_errors(form.valor) }} </span>       
+                        </div>
+                    </div>
+                </div>
+     {% endspaceless %}
+{% endblock %}
+
+{#Bloque de los rangos de respuesta#}
+{% block _Estudio_partesEstudio_entry_preguntas_entry_subpreguntas_entry_rangosRespuesta_entry_row %}
+    {% spaceless %}
+                <div class="offset1 well rangoRespuesta">
+                <div class="control-group {% if form.rangoMin.vars.errors|length or form.rangoMax.vars.errors|length or (errorRango is defined and errorRango) %}error{% endif %}">
+                    <div class="controls">
+                        De {{ form_widget(form.rangoMin) }} <br>a {{ form_widget(form.rangoMax) }}         
+                        <span class="help-inline">{{ form_errors(form.rangoMin) }} </span>  
+                        <span class="help-inline">{{ form_errors(form.rangoMax) }} </span> 
+                    </div>
+                </div>
+            </div>
+     {% endspaceless %}
+{% endblock %}
+
+{#Bloque de las Subpreguntas#}
+{% block _Estudio_partesEstudio_entry_preguntas_entry_subpreguntas_entry_row %}
+    {% spaceless %}
+                <div class="offset1 well subpregunta">
+                <button type="button" class="close close4">&times;</button>
+                <div class="control-group {% if form.numSubpregunta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.numSubpregunta) }}
+                    <div class="controls">
+                        {{ form_widget(form.numSubpregunta) }}        
+                        <span class="help-inline">{{ form_errors(form.numSubpregunta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.subpregunta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.subpregunta) }}
+                    <div class="controls">
+                        {{ form_widget(form.subpregunta) }}        
+                        <span class="help-inline">{{ form_errors(form.subpregunta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.idTipoRespuesta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.idTipoRespuesta) }}
+                    <div class="controls">
+                        {{ form_widget(form.idTipoRespuesta) }}        
+                        <span class="help-inline">{{ form_errors(form.idTipoRespuesta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.rangosRespuesta.vars.errors|length %}error{% endif %} hidden ">
+                    {{ form_label(form.rangosRespuesta) }}
+                    <div class="controls">
+                        {{ form_widget(form.rangosRespuesta) }}        
+                        <span class="help-inline">{{ form_errors(form.rangosRespuesta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.opcionesRespuesta.vars.errors|length %}error{% endif %} hidden ">
+                    {{ form_label(form.opcionesRespuesta) }}
+                    <div class="controls">
+                        {{ form_widget(form.opcionesRespuesta) }}        
+                        <span class="help-inline">{{ form_errors(form.opcionesRespuesta) }} </span>       
+                    </div>
+                </div>
+            </div>
+               <script>
+                    $(function(){
+                        
+                        {#------javascript para los rangos de respuesta--------------------------#}
+                        var rangosRespuestas=$("div.rangosRespuesta").get();
+                        //para cada uno añadimos los indices
+                        for(var i in rangosRespuestas){
+                             if ($(rangosRespuestas[i]).data('index')) {
+                                 $(rangosRespuestas[i]).data('index', $(rangosRespuestas[i]).parent().find(':input').length);
+                             }  
+                             if($(rangosRespuestas[i]).find('.rangoRespuesta').length!=0){
+                                $(rangosRespuestas[i]).parent().parent().show();
+                             }
+                        }
+                        
+                        {#------javascript para las opciones de respuesta--------------------------#}
+                        var opcionesRespuesta=$("div.opcionesRespuesta").get();
+                        //para cada uno añadimos los indices
+                        for(var i in opcionesRespuesta){
+                            if ($(opcionesRespuesta[i]).parent().find('.add_opcionRespuesta_link').length==0){
+                                //si no lo tiene le añadimos y registramos el evento
+                                var $newLinkLi5 = $('<a href="#" class="btn btn-mini btn-info add_opcionRespuesta_link"><i class="icon-plus icon-white"></i> Añadir opción</a>');
+                                $(opcionesRespuesta[i]).parent().append($newLinkLi5);
+                                $(opcionesRespuesta[i]).data('index', $(opcionesRespuesta[i]).parent().find(':input').length);
+                                $newLinkLi5.on('click', function(e) {
+                                    // prevent the link from creating a "#" on the URL
+                                    e.preventDefault();
+                                    // add a new address form (see next code block)
+                                    var $collectionHolderOpcionesRespuesta = $(this).siblings('.opcionesRespuesta');
+                                    
+                                    addTagForm($collectionHolderOpcionesRespuesta,/__numOpcionRespuesta__/g);
+                                });
+                                if($(opcionesRespuesta[i]).find('.opcionRespuesta').length!=0){
+                                    $(opcionesRespuesta[i]).parent().parent().show();
+                                }
+                                
+                             }                 
+                        }
+                        
+                        //según la opción de idTipoRespuesta
+                        $("[id*=idTipoRespuesta]").change( function() {
+                             var op = $(this).find("option:selected").val();
+                            
+                            //si es Rango
+                            if(op == 3){
+                                var $collectionHolderrangosRespuesta = $(this).parent().parent().parent().find(".rangosRespuesta");
+                                addTagForm($collectionHolderrangosRespuesta,/__numRangoRespuesta__/g);
+                                $collectionHolderrangosRespuesta.parent().parent().show();
+                            }else{
+                                $(this).parent().parent().parent().find('.rangosRespuesta').parent().parent().hide();
+                                $(this).parent().parent().parent().find(".rangoRespuesta").closest('.rangoRespuesta').fadeOut(500, function() {
+                                    $(this).remove();
+                                });
+                            }
+                            //si es Opciones
+                            if(op == 2){
+                                var $collectionHolderopcionesRespuesta = $(this).parent().parent().parent().find(".opcionesRespuesta");
+                                $collectionHolderopcionesRespuesta.parent().parent().show();
+                                $collectionHolderopcionesRespuesta.parent().parent().find('.add_opcionRespuesta_link').click();
+                                $collectionHolderopcionesRespuesta.parent().parent().find('.add_opcionRespuesta_link').click();
+                            }else{
+                                $(this).parent().parent().parent().find('.opcionesRespuesta').parent().parent().hide();
+                                $(this).parent().parent().parent().find(".opcionRespuesta").closest('.opcionRespuesta').fadeOut(500, function() {
+                                    $(this).remove();
+                                });
+                            }
+                      });
+                    });
+                    
+                </script>
+     {% endspaceless %}
+{% endblock %}
+
+{#Bloque de las Preguntas#}
+{% block _Estudio_partesEstudio_entry_preguntas_entry_row %}
+    {% spaceless %}
+                <div class="offset1 well pregunta">
+                <button type="button" class="close close3">&times;</button>
+                <div class="control-group {% if form.pregunta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.pregunta) }}
+                    <div class="controls">
+                        {{ form_widget(form.pregunta) }}        
+                        <span class="help-inline">{{ form_errors(form.pregunta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.numPregunta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.numPregunta) }}
+                    <div class="controls">
+                        {{ form_widget(form.numPregunta) }}        
+                        <span class="help-inline">{{ form_errors(form.numPregunta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.numSubpreguntas.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.numSubpreguntas) }}
+                    <div class="controls">
+                        {{ form_widget(form.numSubpreguntas) }}        
+                        <span class="help-inline">{{ form_errors(form.numSubpreguntas) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.repetirPregunta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.repetirPregunta) }}
+                    <div class="controls">
+                        {{ form_widget(form.repetirPregunta) }} <span style="margin-left: 20px; {% if form.repetirPregunta.vars.errors|length %}color: #b94a48;{% endif %}"> veces<span>       
+                        <span class="help-inline">{{ form_errors(form.repetirPregunta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.subpreguntas.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.subpreguntas) }}
+                    <div class="controls">
+                        {{ form_widget(form.subpreguntas) }}        
+                        <span class="help-inline">{{ form_errors(form.subpreguntas) }} </span>       
+                    </div>
+                </div>
+                   <script>
+                    
+                    $(function(){
+                        {#------javascript para las pantallas--------------------------#}
+                        // recoger el div de cada parte
+                        var subpreguntas=$("div.subpreguntas").get();
+                        //para cada uno
+                        for(var i in subpreguntas){
+                            //buscamos si tiene boton add
+                            if ($(subpreguntas[i]).parent().find('.add_subpregunta_link').length==0) {
+                                //si no lo tiene le añadimos y registramos el evento
+                                var $newLinkLi4 = $('<a href="#" class="btn btn-mini btn-info add_subpregunta_link"><i class="icon-plus icon-white"></i> Añadir subpregunta</a>');
+                                $(subpreguntas[i]).parent().append($newLinkLi4);
+                                
+                                $(subpreguntas[i]).data('index', $(subpreguntas[i]).parent().find(':input').length);
+                                
+                                $newLinkLi4.on('click', function(e) {
+                                    // prevent the link from creating a "#" on the URL
+                                    e.preventDefault();
+                                    //añadimos +1 al numero de subpreguntas
+                                    var $numsubpreguntas = $(this).parent().parent().parent().find("[id*=numSubpreguntas]");
+                                    $numsubpreguntas.val(parseInt($numsubpreguntas.val())+1);
+                                    // add a new address form (see next code block)
+                                    var $collectionHolderSubpreguntas = $(this).siblings('.subpreguntas');
+                                    addTagForm($collectionHolderSubpreguntas,/__numsubpregunta__/g);
+                                });
+                            }
+                        }
+                       
+                    });
+                    
+                </script>
+            </div>
+     {% endspaceless %}
+{% endblock %}
+
+{#Bloque de las Patallas de Bienvenida#}
+{% block _Estudio_partesEstudio_entry_pantallasBienvenida_entry_row %}
+    {% spaceless %}
+                <div class="offset1 well pantalla">
+                <button type="button" class="close close2">&times;</button>
+                <div class="control-group {% if form.mensaje.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.mensaje) }}
+                    <div class="controls">
+                        {{ form_widget(form.mensaje) }}        
+                        <span class="help-inline">{{ form_errors(form.mensaje) }} </span>       
+                    </div>
+                </div>
+            </div>
+     {% endspaceless %}
+{% endblock %}
+
+{#Bloque de las Partes del estudio#}
+{% block _Estudio_partesEstudio_entry_row %}
+    {% spaceless %}
+            
+            <div class="offset1 span5 well parte">
+                <button type="button" class="close close1">&times;</button>
+                <div class="control-group {% if form.nombre.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.nombre) }}
+                    <div class="controls">
+                        {{ form_widget(form.nombre) }}        
+                        <span class="help-inline">{{ form_errors(form.nombre) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.numOrden.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.numOrden) }}
+                    <div class="controls">
+                        {{ form_widget(form.numOrden) }}        
+                        <span class="help-inline">{{ form_errors(form.numOrden) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.numPreguntas.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.numPreguntas) }}
+                    <div class="controls">
+                        {{ form_widget(form.numPreguntas) }}        
+                        <span class="help-inline">{{ form_errors(form.numPreguntas) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.titulo.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.titulo) }}
+                    <div class="controls">
+                        {{ form_widget(form.titulo) }}        
+                        <span class="help-inline">{{ form_errors(form.titulo) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.guardarTiempoRespuesta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.guardarTiempoRespuesta) }}
+                    <div class="controls">
+                        {{ form_widget(form.guardarTiempoRespuesta) }}        
+                        <span class="help-inline">{{ form_errors(form.guardarTiempoRespuesta) }} </span>       
+                    </div>
+                </div>
+                
+                <div class="control-group {% if form.idTipoPregunta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.idTipoPregunta) }}
+                    <div class="controls">
+                        {{ form_widget(form.idTipoPregunta) }}        
+                        <span class="help-inline">{{ form_errors(form.idTipoPregunta) }} </span>       
+                    </div>
+                </div>
+                <div >
+                    <div class="control-group {% if form.numPreguntasDePrueba.vars.errors|length %}error{% endif %}">
+                        {{ form_label(form.numPreguntasDePrueba) }}
+                        <div class="controls">
+                            {{ form_widget(form.numPreguntasDePrueba) }}        
+                            <span class="help-inline">{{ form_errors(form.numPreguntasDePrueba) }} </span>       
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group {% if form.pantallasBienvenida.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.pantallasBienvenida) }}
+                    <div class="controls">
+                        {{ form_widget(form.pantallasBienvenida) }}        
+                        <span class="help-inline">{{ form_errors(form.pantallasBienvenida) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.preguntas.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.preguntas) }}
+                    <div class="controls">
+                        {{ form_widget(form.preguntas) }}        
+                        <span class="help-inline">{{ form_errors(form.preguntas) }} </span>       
+                    </div>
+                </div>
+                <script>
+                    
+                    $(function(){
+                        {#------javascript para las pantallas--------------------------#}
+                        // recoger el div de cada parte
+                        var pantallas=$("div.pantallas").get();
+                        //para cada uno
+                        for(var i in pantallas){
+                            //buscamos si tiene boton add
+                            if ($(pantallas[i]).parent().find('.add_pantalla_link').length==0) {
+                                //si no lo tiene le añadimos y registramos el evento
+                                var $newLinkLi2 = $('<a href="#" class="btn btn-mini btn-info add_pantalla_link"><i class="icon-plus icon-white"></i> Añadir mensaje</a>');
+                                $(pantallas[i]).parent().append($newLinkLi2);
+                                
+                                $(pantallas[i]).data('index', $(pantallas[i]).parent().find(':input').length);
+                                
+                                $newLinkLi2.on('click', function(e) {
+                                    // prevent the link from creating a "#" on the URL
+                                    e.preventDefault();
+                                    // add a new address form (see next code block)
+                                    var $collectionHolderPantallas = $(this).siblings('.pantallas');
+                                    
+                                    //alert($collectionHolderPantallas.data('index'));
+                                    addTagForm($collectionHolderPantallas,/__numpantalla__/g);
+                                    $(this).hide();
+                                });
+                            }
+                        }
+                        {#------javascript para las preguntas--------------------------#}
+                        // recoger el div de cada parte
+                        var preguntas=$("div.preguntas").get();
+                        //para cada uno
+                        for(var i in preguntas){
+                            //buscamos si tiene boton add
+                            if ($(preguntas[i]).parent().find('.add_pregunta_link').length==0) {
+                                //si no lo tiene le añadimos y registramos el evento
+                                var $newLinkLi3 = $('<a href="#" class="btn btn-mini btn-info add_pregunta_link"><i class="icon-plus icon-white"></i> Añadir una pregunta</a>');
+                                $(preguntas[i]).parent().append($newLinkLi3);
+                                $(preguntas[i]).data('index', $(preguntas[i]).find(':input').length);
+                                $newLinkLi3.on('click', function(e) {
+                                    
+                                    // prevent the link from creating a "#" on the URL
+                                    e.preventDefault();
+                                    //añadimos +1 al numero de preguntas
+                                    var $numpreguntas = $(this).parent().parent().parent().find("[id$=numPreguntas]");
+                                    $numpreguntas.val(parseInt($numpreguntas.val())+1);
+                                    // add a new address form (see next code block)
+                                    var $collectionHolderPreguntas = $(this).siblings('.preguntas');
+                                    addTagForm($collectionHolderPreguntas,/__numpregunta__/g);
+                                });
+                            }
+                        }
+                    });
+                    
+                </script>
+            </div>
+     {% endspaceless %}
+{% endblock %}
+
+{#Bloque principal#}
+{% block center %}
+
+<div id="frame"  class="marginBottom">
+    <h1>Crear Estudio</h1>
+    <div class="row">
+        <div class="span12">
+            <form id="crear" action="{{ path('estudio_create') }}" method="post" novalidate>
+               <div class="control-group  {% if form.vars.errors|length or (errorRango is defined and errorRango) or  (errorNumPruebas is defined and errorNumPruebas)%}error alert alert-error row-fluid{% endif %}">
+                    <div class="controls">
+                        {% if form.vars.errors|length or (errorRango is defined and errorRango) or  (errorNumPruebas is defined and errorNumPruebas)%}
+                            <span class="help-inline error2"><strong>ERROR: </strong></span><br>    
+                        {% endif %}
+                        <span class="help-inline error2">{{ form_errors(form) }} </span>       
+                        {% if errorRango is defined and errorRango %}
+                            <span class="help-inline error2">{{ errorRango }} </span>  
+                        {% endif %}
+                        {% if errorNumPruebas is defined and errorNumPruebas %}
+                            <span class="help-inline error2">{{ errorNumPruebas | raw }} </span>  
+                        {% endif %}
+                    </div>
+                </div> 
+                <div class="control-group {% if form.nombre.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.nombre) }}
+                    <div class="controls">
+                        {{ form_widget(form.nombre) }}        
+                        <span class="help-inline">{{ form_errors(form.nombre) }} </span>       
+                    </div>
+                </div> 
+                <div class="control-group {% if form.numSecciones.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.numSecciones) }}
+                    <div class="controls">
+                        {{ form_widget(form.numSecciones) }}        
+                        <span class="help-inline">{{ form_errors(form.numSecciones) }} </span>       
+                    </div>
+                </div> 
+                <div class="control-group {% if form.numDatosEstudio.vars.errors|length or (errorNumDatosEstudio is defined and errorNumDatosEstudio) %}error{% endif %}">
+                    {{ form_label(form.numDatosEstudio) }}
+                    <label class="small">Máx({{ numFragmentos }})</label>
+                    <div class="controls">
+                        {{ form_widget(form.numDatosEstudio) }}        
+                        <span class="help-inline">{{ form_errors(form.numDatosEstudio) }} </span>   
+                        <span class="help-inline">
+                            {% if errorNumDatosEstudio is defined and errorNumDatosEstudio %}
+                                {{ errorNumDatosEstudio }}
+                            {% endif %}
+                        </span>   
+                        
+                    </div>
+                </div> 
+                <div class="control-group {% if form.descripcion.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.descripcion) }}
+                    <div class="controls">
+                        {{ form_widget(form.descripcion) }}        
+                        <span class="help-inline">{{ form_errors(form.descripcion) }} </span>       
+                    </div>
+                </div> 
+                <div class="control-group {% if form.partesEstudio.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.partesEstudio) }}
+                    <div class="controls">
+                        {{ form_widget(form.partesEstudio) }}        
+                        <span class="help-inline">{{ form_errors(form.partesEstudio) }} </span>       
+                    </div>
+                </div> 
+                <div class="control-group {% if form.distracciones.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.distracciones) }}
+                    <div class="controls">
+                        {{ form_widget(form.distracciones) }}        
+                        <span class="help-inline">{{ form_errors(form.distracciones) }} </span>       
+                    </div>
+                </div> 
+                {{ form_rest(form) }} 
+                <div class="form-actions">
+                    <button id="bottomcrear" class="cargando hide" type="submit">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <ul class="record_actions hide">
+        <li>
+            <a id="volver" href="#" onclick="cargarEnGestion('{{ path('estudio') }}')">
+                Volver a la lista  
+                
+            </a>
+        </li>
+    </ul>
+    <script>
+        //al no recargar la pagina solo hace falta registrar eventos una sola vez
+        var flag;
+        if(flag==null)flag=0;
+        else flag++;
+        var collection;
+        
+        $(function(){
+        
+            //iniciación de partes
+            var collectionHolder = $('div.partes');
+            var $newLinkLi = $('<a id="añadirparte" href="#" class="btn btn-mini btn-info add_parte_link"><i class="icon-plus icon-white"></i> Añadir una parte</a>');
+        
+            // add the "add a address" anchor and li to the addresses div
+            collectionHolder.parent().append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find(':input').length);
+            
+            $newLinkLi.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                
+                //sumamos uno al campo número de partes
+                $('#Estudio_numSecciones').val(parseInt($('#Estudio_numSecciones').val())+1);
+                // add a new address form (see next code block)
+                addTagForm(collectionHolder,/__numparte__/g);
+            });
+            
+            //iniciación de distracciones
+            var collectionHolder6 = $('div.distracciones');
+            var $newLinkLi6 = $('<a id="añadirdistraccion" href="#" class="btn btn-mini btn-info add_distraccion_link"><i class="icon-plus icon-white"></i> Añadir una distracción</a>');
+        
+            // add the "add a address" anchor and li to the addresses div
+            collectionHolder6.parent().append($newLinkLi6);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder6.data('index', collectionHolder6.find(':input').length);
+            
+            $newLinkLi6.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                //sumamos uno al campo número de partes
+                $('#Estudio_numSecciones').val(parseInt($('#Estudio_numSecciones').val())+1);
+                // add a new address form (see next code block)
+                addTagForm(collectionHolder6,/__numdistraccion__/g);
+            });
+            
+            
+            
+            if(flag==0){
+                
+                
+                //eventos de cerrado de partes de estudios
+                $(document).on('click', '.close1', function(){//close para los de 1º nivel.q es obligatorio que al menos haya 1.
+                    if($('.parte','.partes').length == 1){
+                        //debe haber una como mínimo
+                        $(function() {
+                            $( "#mensaje-una-parte-minima" ).dialog({
+                              modal: true,
+                              buttons: {
+                                Aceptar: function() {
+                                  $( this ).dialog( "close" );
+                                }
+                              }
+                            });
+                          });
+                        $('.ui-dialog-titlebar-close').remove();
+                    }else{
+                        $(this).closest('.parte').fadeOut(500, function() {
+                            $(this).remove();
+                        });
+                        $('#Estudio_numSecciones').val(parseInt($('#Estudio_numSecciones').val())-1);
+                    }
+                });
+                
+                //eventos de cerrado de pantallas de bienvenida
+                $(document).on('click', '.close2', function(){
+                    //mostramos el botón
+                    $(this).parent().parent().parent().parent().find('.add_pantalla_link').show();
+                    //Eliminamos la pantalla de bienvenida           
+                    $(this).closest('.pantalla').fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                });
+                
+                //eventos de cerrado de preguntas
+                $(document).on('click', '.close3', function(){
+                    //debe haber una como mínimo
+                    if($(this).parent().parent().parent().find(".pregunta").length == 1){
+                        $(function() {
+                            $( "#mensaje-una-pregunta-minima" ).dialog({
+                              modal: true,
+                              buttons: {
+                                Aceptar: function() {
+                                  $( this ).dialog( "close" );
+                                }
+                              }
+                            });
+                          });
+                        $('.ui-dialog-titlebar-close').remove();
+                    }else{
+                        //sumamos +1 al campo número de preguntas
+                        $(this).parent().parent().parent().parent().parent().parent().parent().find("[id*=numPreguntas]").val(parseInt($(this).parent().parent().parent().parent().parent().parent().parent().find("[id*=numPreguntas]").val())-1);
+                        $(this).closest('.pregunta').fadeOut(500, function() {
+                            $(this).remove();
+                        });
+                    }
+                });
+                
+                //eventos de cerrado de subpreguntas
+                $(document).on('click', '.close4', function(){
+                    //debe haber una como mínimo
+                    if($(this).parent().parent().parent().find(".subpregunta").length == 1){
+                        $(function() {
+                            $( "#mensaje-una-subpregunta-minima" ).dialog({
+                              modal: true,
+                              buttons: {
+                                Aceptar: function() {
+                                  $( this ).dialog( "close" );
+                                }
+                              }
+                            });
+                          });
+                        $('.ui-dialog-titlebar-close').remove();
+                    }else{
+                        //sumamos +1 al campo número de preguntas
+                        $(this).parent().parent().parent().parent().parent().parent().find("[id*=numSubpreguntas]").val(parseInt($(this).parent().parent().parent().parent().parent().parent().find("[id*=numSubpreguntas]").val())-1);
+                        $(this).closest('.subpregunta').fadeOut(500, function() {
+                            $(this).remove();
+                        });
+                    }
+                });
+                //eventos de cerrado de opciones de respuesta
+                $(document).on('click', '.close5', function(){
+                    //debe haber 2 como mínimo
+                    if($(this).parent().parent().parent().find(".opcionRespuesta").length <= 2){
+                        $(function() {
+                            $( "#mensaje-dos-opcionRespuesta-minima" ).dialog({
+                              modal: true,
+                              buttons: {
+                                Aceptar: function() {
+                                  $( this ).dialog( "close" );
+                                }
+                              }
+                            });
+                          });
+                        $('.ui-dialog-titlebar-close').remove();
+                    }else{
+                        $(this).closest('.opcionRespuesta').fadeOut(500, function() {
+                            $(this).remove();
+                        });
+                    }
+                });
+                //eventos de cerrado de distraciones
+                $(document).on('click', '.close6', function(){
+                    //Eliminamos la pantalla de bienvenida           
+                    $(this).closest('.distraccion').fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                    $('#Estudio_numSecciones').val(parseInt($('#Estudio_numSecciones').val())-1);
+                });
+                
+                //para controlar que, si las preguntas son de adjetivos o fragmento,
+                //que no sea mayor que el número de datos de estudio.
+                $(document).on('change', '[id*=repetirPregunta]', function(){
+                    //buscamos si el tipo de preguntas es adjetivo o fragmento
+                    var $aux = $(this).parent().parent().parent().parent().parent().parent().parent().parent();
+                    if(($aux.find('[id*=idTipoPregunta]').val()==2) || ($aux.find('[id*=idTipoPregunta]').val()==3)){
+                        //mostramos popup de error
+                        if($(this).val()>$("#Estudio_numDatosEstudio").val()){
+                            $( "#mensaje-repetir-pregunta" ).dialog({
+                              modal: true,
+                              buttons: {
+                                Aceptar: function() {
+                                  $( this ).dialog( "close" );
+                                }
+                              }
+                            });
+                            $(this).val(0);
+                        }
+                    }
+                });
+            }
+            {#---al validar si hay algn error el boton de agregar pantalla de bienvenida solo debe salir si no hay pantalla--------#}
+            var boton=$("a.add_pantalla_link").get();
+            //para cada uno
+            for(var i in boton){
+                //buscamos si tiene un sobrino pantalla
+                if ($(boton[i]).parent().find('.pantalla').length!=0) {
+                    //si lo tiene ocultamos el boton
+                    $(boton[i]).hide();
+                }
+            }    
+
+            
+            //al recargar el formulario se tiene que activar el evento para que salga correctamente.
+            $("[id*=idTipoPregunta]").trigger('change');
+
+            //quitamos el div cargando
+            
+        });
+        //función para ocultar el campo numPreguntasDePrueba si el tipo de preguntas es texto
+        function ocultarnumPreguntasDePrueba(id){
+            var $numpreguntas = $('#'+id).parent().parent().parent().find("[id*=numPreguntasDePrueba]");
+            if($('#'+id+" option:selected").val()== 1){
+                $numpreguntas.parent().parent().hide();
+                //ponemos a cero el campo que ocultamos
+                $numpreguntas.val('0');
+            }else{
+                $numpreguntas.parent().parent().show();
+            }
+        }
+        cargarYmostrar();
+    </script>
+    </div>
+    {# Div para mostrar error al eliminar una parte si solo existe esa parte #}
+    <div id="mensaje-una-parte-minima" title="Error al eliminar parte" style="display: none" >
+      <p>
+            El estudio a crear debe tener al menos una parte.
+      </p>
+    </div>
+    {# Div para mostrar error al eliminar una pregunta si solo existe esa pregunta en esa parte #}
+    <div id="mensaje-una-pregunta-minima" title="Error al eliminar pregunta" style="display: none" >
+      <p>
+            La parte a crear debe tener al menos una pregunta.
+      </p>
+    </div>
+    <div id="mensaje-una-subpregunta-minima" title="Error al eliminar subpregunta" style="display: none" >
+      <p>
+            La pregunta a crear debe tener al menos una subpregunta.
+      </p>
+    </div>
+    <div id="mensaje-dos-opcionRespuesta-minima" title="Error al eliminar opción" style="display: none" >
+      <p>
+            La lista de opciones debe tener al menos dos opciones.
+      </p>
+    </div>
+    <div id="mensaje-repetir-pregunta" title="Error: " style="display: none" >
+      <p>
+            El número de repeticiones debe ser menor o igual al número de datos de estudio.
+      </p>
+    </div>
+{% endblock %}
+
+{#Bloque footer#}
+{% block footer %}
+    <footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+        <div class="row">
+            <div class=" align-center">
+                
+                <button class="win-command" onclick="$('#añadirparte').click();">
+                    <span class="win-commandimage win-commandring"></span>
+                    <span class="win-label">Añadir parte</span>
+                </button>
+
+                <button class="win-command" id="opcioncrear">
+                    <span class="win-commandimage win-commandring">R</span>
+                    <span class="win-label">Crear</span>
+                </button>
+
+                <button class="win-command" onclick="$('#volver').click();">
+                    <span class="win-commandimage win-commandring"></span>
+                    <span class="win-label">Volver a la lista</span>
+                </button>
+
+            </div>
+
+
+        </div>
+    </footer>
+    <div id="dialog-crear" title="Mensaje de confirmación">
+        ATENCIÓN: Recuerde que los estudios una vez creados no se pueden modificar. Le recomendamos que revise muy bien los datos introducidos.
+    </div>​
+    <script>
+        $("#dialog-crear").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons : {
+                 "Crear" : function() {
+                     $('#bottomcrear').click();
+                     $(this).dialog("close");
+                 },
+                 "Cancelar" : function() {
+                   $(this).dialog("close");
+                 }
+             }
+        });
+        $("#opcioncrear").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog-crear").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+    </script>
+    
+{% endblock %}
+

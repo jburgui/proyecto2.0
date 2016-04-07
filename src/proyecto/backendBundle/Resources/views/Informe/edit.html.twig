@@ -1,0 +1,302 @@
+{% extends 'proyectobackendBundle:Default:index.html.twig' %}
+
+
+
+{% block head %}{% endblock %}
+{% block header %}{% endblock %}
+{% block fondo %}{% endblock %}
+{% block finfondo %}{% endblock %}
+{% form_theme form _self %}
+
+
+{#Bloque de las columnas#}
+{% block _informe_columnas_entry_row %}
+    {% spaceless %}
+            
+            <div class="offset1 span5 well columna">
+                <button type="button" class="close">&times;</button>
+                <div class="control-group {% if form.nombreColumna.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.nombreColumna) }}
+                    <div class="controls">
+                        {{ form_widget(form.nombreColumna) }}        
+                        <span class="help-inline">{{ form_errors(form.nombreColumna) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.idSubpregunta.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.idSubpregunta) }}
+                    <div class="controls">
+                        {{ form_widget(form.idSubpregunta) }}        
+                        <span class="help-inline">{{ form_errors(form.idSubpregunta) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.tratamiento.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.tratamiento) }}
+                    <div class="controls">
+                        {{ form_widget(form.tratamiento) }}        
+                        <span class="help-inline">{{ form_errors(form.tratamiento) }} </span>       
+                    </div>
+                </div>
+                <div class="control-group {% if form.grafica.vars.errors|length %}error{% endif %}">
+                    {{ form_label(form.grafica) }}
+                    <div class="controls">
+                        {{ form_widget(form.grafica) }}        
+                        <span class="help-inline">{{ form_errors(form.grafica) }} </span>       
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+            
+     {% endspaceless %}
+{% endblock %}
+
+
+{% block center %}
+
+    <div id="frame" class="marginBottom">
+        <h1>Crear Informe</h1>
+        <div class="row">
+
+            <div class="span12">
+                <form id="crear" action="{{ path('informe_update', { 'id': entity.id }) }}" onsubmit="return desbloquearid('informe_idParteEstudio')" method="post" novalidate>
+                   <div class="control-group  {% if form.vars.errors|length or (mensajesError is defined and mensajesError) %}error alert alert-error row-fluid{% endif %}">
+                        <div class="controls">
+                            {% if form.vars.errors|length or (mensajesError is defined and mensajesError) %}
+                                <span class="help-inline error2"><strong>ERROR: </strong></span><br>    
+                            {% endif %}
+                            <span class="help-inline error2">{{ form_errors(form) }} </span>       
+                            {% if mensajesError is defined and mensajesError %}
+                                <span class="help-inline error2">{{ mensajesError | raw }} </span>  
+                            {% endif %}
+                        </div>
+                    </div> 
+                    <div class="control-group {% if form.idParteEstudio.vars.errors|length %}error{% endif %}">
+                        {{ form_label(form.idParteEstudio) }}
+                        <div class="controls">
+                            {{ form_widget(form.idParteEstudio) }}        
+                            <span class="help-inline">{{ form_errors(form.idParteEstudio) }} </span>      
+                        </div>
+                    </div> 
+                    <div class="control-group {% if form.tituloGrafico.vars.errors|length %}error{% endif %}">
+                        {{ form_label(form.tituloGrafico) }}
+                        <div class="controls">
+                            {{ form_widget(form.tituloGrafico) }}        
+                            <span class="help-inline">{{ form_errors(form.tituloGrafico) }} </span>       
+                        </div>
+                    </div> 
+
+                    <div class="control-group {% if form.columnas.vars.errors|length %}error{% endif %}">
+                        {{ form_label(form.columnas) }}
+                        <div class="controls">
+                            {{ form_widget(form.columnas) }}        
+                            <span class="help-inline">{{ form_errors(form.columnas) }} </span>       
+                        </div>
+                    </div> 
+
+                    {{ form_rest(form) }} 
+                    <div class="form-actions hide">
+                        <button id="bottomcrear" class="cargando" type="submit" >Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="hide">
+            <a id="volver" href="#" onclick="cargarEnGestion('{{ path('informe') }}')">
+                Volver a la lista  
+            </a>
+        </div>
+    </div>
+
+    <script>
+        //guardamos el tipoRespuesta de cada subpregunta para modificar el tratammiento según sea
+        var arrayTipos = new Array();
+        {% for opcion in selectSubpreguntas %}
+            arrayTipos[{{ opcion.id }}] = {{ opcion.tipoRespuesta }};
+        {% endfor %}
+
+
+        $(function(){
+            //iniciación de columnas
+            var collectionHolder = $('div.columnas');
+            var $newLinkLi = $('<a id="añadircolumna" href="#" class="hide add_columna_link"><i class="icon-plus icon-white"></i> Añadir una columna</a>');
+
+            // add the "add a address" anchor and li to the addresses div
+            collectionHolder.parent().append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            collectionHolder.data('index', collectionHolder.find(':input').length);
+
+            $newLinkLi.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new address form (see next code block)
+                addTagForm(collectionHolder,/__numcolumna__/g);
+
+                //vaciamos y rellenamos el select de las subpreguntas
+                $(".columna").last().find("[id*=idSubpregunta]").empty();
+
+                {% for opcion in selectSubpreguntas %}
+                        $(".columna").last().find("[id*=idSubpregunta]").append('<option value="{{ opcion.id }}">{{ opcion.pregunta }}-{{ opcion.subpregunta }}</option>');
+                {% endfor %}
+
+                //filtramos los selects según el tipo de pregunta
+                {%if flagTipoPregunta < 3 %}
+                    {#eliminamos la texto-fragmento si no son preguntas de tipo fragmento#}
+                    $(".columna").last().find("[id*=tratamiento] option[value=texto-fragmento]").remove();
+                {% endif %}
+
+                //evento de control de que solo haya 1 columna para la grafica si el tipo de pregunta es adj/frag.
+                $(".columna").last().find("[id*=grafica]").change( function() {
+
+                    if({{ flagTipoPregunta }} > 1){
+                        comprobarEjes({{ flagTipoPregunta }});
+                    }
+
+                })
+                //evento al cambiar la subpregunta para dar las opciones validas de tratamiento 
+                $(".columna").last().find("[id*=idSubpregunta]").change( function() {
+
+                    //si es texto
+                    if(arrayTipos[$("option:selected", this).val()] == 1){
+                        //dejamos solo los tratamientos para texto
+                        $(this).parent().parent().parent().find("[id*=tratamiento]").empty();
+                        $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="texto-fragmento">texto-fragmento</option>');
+                    }else{
+                        //si no, solo dejamos los tratamientos numéricos
+                        $(this).parent().parent().parent().find("[id*=tratamiento]").empty();
+                        $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="media-aritmética">media-aritmética</option>');
+                        $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="media-geométrica">media-geométrica</option>');
+                        $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="media-armónica">media-armónica</option>');
+                        $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="sumatorio">sumatorio</option>');
+                    }
+
+                });
+                $(".columna").last().find("[id*=idSubpregunta]").trigger('change');
+            });
+
+            //eventos de cerrado de columnas
+            $(document).on('click', '.close', function(){
+                //debe haber 2 como mínimo
+                if($(this).parent().parent().parent().find(".columna").length <= 1){
+                    $(function() {
+                        $( "#mensaje-dos-columnas-minimo" ).dialog({
+                          modal: true,
+                          buttons: {
+                            Aceptar: function() {
+                              $( this ).dialog( "close" );
+                            }
+                          }
+                        });
+                      });
+                    $('.ui-dialog-titlebar-close').remove();
+                }else{
+                    $(this).closest('.columna').fadeOut(500, function() {
+                        $(this).remove();
+                        comprobarEjes();
+                    });
+                }
+            });
+
+
+            //filtramos los select de las columnas si exeste alguna, es decir, si se está validando y algo ha fallado
+
+            $(".columna").find("[id*=idSubpregunta]").each(function() {
+
+                var aux = $("option:selected", this).val();
+                //vaciamos y rellenamos el select de las subpreguntas
+                $(this).empty();
+                {% for opcion in selectSubpreguntas %}
+                    if(aux == {{ opcion.id }} ){
+                        $(this).append('<option value="{{ opcion.id }}" selected="selected">{{ opcion.pregunta }}-{{ opcion.subpregunta }}</option>');
+                    }else{
+                        $(this).append('<option value="{{ opcion.id }}">{{ opcion.pregunta }}-{{ opcion.subpregunta }}</option>');
+                    }
+                {% endfor %}
+            });
+
+
+
+            {%if flagTipoPregunta < 3 %}
+                {#eliminamos la texto-fragmento si no son preguntas de tipo fragmento#}
+                $(".columna").find("[id*=tratamiento] option[value=texto-fragmento]").remove();
+            {% endif %}
+
+
+
+            //llamamos a los eventos change para que al validar y fallar se rellenen bien.
+            //evento de control de que solo haya 1 columna para la grafica si el tipo de pregunta es adj/frag.
+            $(".columna").find("[id*=grafica]").change( function() {
+
+                if({{ flagTipoPregunta }} > 1){
+                    comprobarEjes({{ flagTipoPregunta }});
+                }
+
+            })
+            //evento al cambiar la subpregunta para dar las opciones validas de tratamiento 
+            $(".columna").find("[id*=idSubpregunta]").change( function() {
+
+                //si es texto
+                if(arrayTipos[$("option:selected", this).val()] == 1){
+                    //dejamos solo los tratamientos para texto
+                    $(this).parent().parent().parent().find("[id*=tratamiento]").empty();
+                    $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="texto-fragmento">texto-fragmento</option>');
+                }else{
+                    //si no, solo dejamos los tratamientos numéricos
+                    $(this).parent().parent().parent().find("[id*=tratamiento]").empty();
+                    $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="media-aritmética">media-aritmética</option>');
+                    $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="media-geométrica">media-geométrica</option>');
+                    $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="media-armónica">media-armónica</option>');
+                    $(this).parent().parent().parent().find("[id*=tratamiento]").append('<option value="sumatorio">sumatorio</option>');
+                }
+
+            });
+            $(".columna").find("[id*=idSubpregunta]").trigger('change');
+            $(".columna").find("[id*=grafica]").trigger('change');
+            $('#informe_idParteEstudio').attr('disabled','disabled');
+            
+        })
+
+    </script>
+    <div id="mensaje-dos-columnas-minimo" title="Error al eliminar opción" style="display: none" >
+      <p>
+            El informe debe tener al menos una columna.
+      </p>
+    </div>
+
+        
+    <script>
+        cargarYmostrar();
+    </script>
+{% endblock %}
+
+    
+{#Bloque footer#}
+{% block footer %}
+    <footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+        <div class="row">
+            <div class=" align-center">
+                    <button class="win-command" onclick="$('#añadircolumna').click();">
+                        <span class="win-commandimage win-commandring"></span>
+                        <span class="win-label">Añadir columna</span>
+                    </button>
+
+                    <button id="bottomcrear2" class="win-command" onclick="$('#bottomcrear').click();">
+                        <span class="win-commandimage win-commandring">R</span>
+                        <span class="win-label">Guardar</span>
+                    </button>
+                <button class="win-command" onclick="$('#volver').click();">
+                    <span class="win-commandimage win-commandring"></span>
+                    <span class="win-label">Volver a la lista</span>
+                </button>
+
+            </div>
+
+
+        </div>
+    </footer>
+    
+    
+{% endblock %}

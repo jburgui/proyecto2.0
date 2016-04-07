@@ -1,0 +1,37 @@
+proyecto\backendBundle\Entity\Usuario:
+    type: entity
+    table: usuario
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        nombre:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        contrasena:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        email:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+    manyToOne:
+        rol:
+            targetEntity: Rol
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                rol:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

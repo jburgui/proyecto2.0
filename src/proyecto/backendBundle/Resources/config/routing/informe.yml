@@ -1,0 +1,31 @@
+
+informe_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "proyectobackendBundle:Informe:show" }
+
+informe_new:
+    pattern:  /new
+    defaults: { _controller: "proyectobackendBundle:Informe:new" }
+
+informe_create:
+    pattern:  /create
+    defaults: { _controller: "proyectobackendBundle:Informe:create" }
+    requirements: { _method: post }
+
+informe_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "proyectobackendBundle:Informe:edit" }
+
+informe_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "proyectobackendBundle:Informe:update" }
+    requirements: { _method: post|put }
+
+informe_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "proyectobackendBundle:Informe:delete" }
+    requirements: { _method: post|delete }
+
+informe:
+    pattern:  /{page}
+    defaults: { _controller: "proyectobackendBundle:Informe:index", page: 1 }

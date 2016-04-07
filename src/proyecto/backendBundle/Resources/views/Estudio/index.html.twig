@@ -1,0 +1,159 @@
+<div id="frame" class="marginBottom">
+    <h1>Lista de Estudios</h1>
+    <div class="form-filtro">
+        <form id="filtrar" action="{{ path('estudio') }}" method="post">
+            <div class="input-append">
+                <input  id="filtro" class="input-busqueda" value="{{ filtro }}" placeholder="Filtar..." name="filtro" autofocus/>
+                <button type="submit" class='btn add-on texto-negro cargando'>
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+            <a href="#" onclick="cargarEnGestion('{{ path('estudio') }}');">Eliminar filtro</a>
+        </form>
+    </div>
+    <table  id="tabla1" class="records_list row-fluid display table">
+        <thead>
+            <tr>
+                {# sorting of properties based on query components #}
+                <th>
+                    {{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}
+                    {% if sort=='a.id' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.nombre') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Nombre', 'a.nombre') }}
+                    {% if sort=='a.nombre' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.numSecciones') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Núm. de secciones', 'a.numSecciones') }}
+                    {% if sort=='a.numSecciones' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.numDatosEstudio') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Núm. de datos de estudio', 'a.numDatosEstudio') }}
+                    {% if sort=='a.numDatosEstudio' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.descripcion') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Descripción', 'a.descripcion') }}
+                    {% if sort=='a.descripcion' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th{% if pagination.isSorted('a.activa') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Activa', 'a.activa') }}
+                    {% if sort=='a.activa' %}
+                        {% if direction=='asc' %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_asc.png')}}" alt="">
+                        {% else %}
+                            <img src="{{asset('bundles/proyectobackend/images/sort_desc.png')}}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <img src="{{asset('bundles/proyectobackend/images/sort_both.png')}}" alt="">
+                    {% endif %}
+                </th>
+                <th style="min-width: 160px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in pagination %}
+            <tr {% if loop.index is odd %}class="impar"{% endif %}>
+                <td ><a href="#" onclick="cargarEnGestion('{{ path('estudio_show', { 'id': article.id }) }}');">{{ article.id }}</a></td>
+                <td>{{ article.nombre }}</td>
+                <td>{{ article.numSecciones }}</td>
+                <td>{{ article.numDatosEstudio }}</td>
+                <td>{{ article.descripcion }}</td>
+                <td class="botonestudioactivo">
+                    {%if article.activa==false %}
+                        <a href="#" {% if admin==true %}  onclick="cargarEnGestion('{{ path('estudio_des_activar', { 'id': article.id }) }}');"{%endif%}>
+                            <img src="{{asset('bundles/proyectobackend/images/rojo.png')}}" alt="">
+                        </a> 
+                    {%else%}
+                        <a href="#" {% if admin==true %}  onclick="cargarEnGestion('{{ path('estudio_des_activar', { 'id': article.id }) }}');"{%endif%}>
+                            <img src="{{asset('bundles/proyectobackend/images/verde.png')}}" alt="">
+                        </a>
+                    {%endif%}
+                </td>
+                <td>
+                    <div>
+                        <a class="btn btn-mini" href="#" onclick="cargarEnGestion('{{ path('estudio_show', { 'id': article.id }) }}');"><i class="icon-search">&nbsp; </i>&nbsp; ver</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    <ul class="row-fluid" style="display: inline-block">
+        <li >
+            <a  class="btn btn-primary" href="#" onclick="cargarEnGestion('{{path('estudio_new')}}');">
+                <i class="icon-new"> </i>  &nbsp; Crear nuevo estudio
+            </a>
+        </li>
+    </ul>
+    <script> 
+        //para que los enlaces se carguen en gestion
+        $(document).ready(function(){
+            $(".sortable,.asc,.desc").on('click', function(event){
+                event.preventDefault();
+                //si hay filtro se añade al final del enlace
+                var filtro = document.getElementById('filtro').value;
+                var href = $(this).attr('href');
+                if(filtro!=''){
+                    href = href + '&filtro=' + filtro;
+                }
+                cargarEnGestion(href);
+            } );
+            $(".pagination span a").on('click', function(event){
+                event.preventDefault();
+                var filtro = document.getElementById('filtro').value;
+                if(filtro=='' || (/filtro/.test($(this).attr("href")))){
+                    cargarEnGestion($(this).attr("href"));
+                }else{
+                    cargarEnGestion($(this).attr("href")+ '?filtro=' + filtro);
+                }
+            } );
+        });
+    </script>
+    <script>
+        cargarYmostrar();
+    </script>
+</div>

@@ -1,0 +1,31 @@
+
+adjetivo_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "proyectobackendBundle:Adjetivo:show" }
+
+adjetivo_new:
+    pattern:  /new
+    defaults: { _controller: "proyectobackendBundle:Adjetivo:new" }
+
+adjetivo_create:
+    pattern:  /create
+    defaults: { _controller: "proyectobackendBundle:Adjetivo:create" }
+    requirements: { _method: post }
+
+adjetivo_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "proyectobackendBundle:Adjetivo:edit" }
+
+adjetivo_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "proyectobackendBundle:Adjetivo:update" }
+    requirements: { _method: post|put }
+
+adjetivo_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "proyectobackendBundle:Adjetivo:delete" }
+    requirements: { _method: post|delete }
+
+adjetivo:
+    pattern:  /{page}
+    defaults: { _controller: "proyectobackendBundle:Adjetivo:index", page: 1 }

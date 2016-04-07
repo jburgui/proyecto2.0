@@ -1,0 +1,22 @@
+admin:
+    pattern:  /admin
+    defaults: { _controller: proyectobackendBundle:Default:index }
+
+usuario:
+    resource: "@proyectobackendBundle/Resources/config/routing/usuario.yml"
+    prefix:   admin/usuario
+    
+adjetivo:
+    resource: "@proyectobackendBundle/Resources/config/routing/adjetivo.yml"
+    prefix:   admin/adjetivo
+    
+fragmento:
+    resource: "@proyectobackendBundle/Resources/config/routing/fragmento.yml"
+    prefix:   admin/fragmento
+    
+estudio:
+    resource: "@proyectobackendBundle/Resources/config/routing/estudio.yml"
+    prefix:   admin/estudio
+informe:
+     resource: "@proyectobackendBundle/Resources/config/routing/informe.yml"
+     prefix:   admin/informe

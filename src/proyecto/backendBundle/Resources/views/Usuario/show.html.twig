@@ -1,0 +1,79 @@
+<div id="frame" class="marginBottom">
+    <h1>Usuario</h1>
+    <table class="tabla record_properties row-fluid">
+        <thead></thead>
+        <tbody>
+            <tr>
+                <th>Id: </th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre: </th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            {#
+            <tr>
+                <th>Contraseña: </th>
+                <td>{{ entity.contrasena }}</td>
+            </tr>
+            #}
+            <tr>
+                <th>Rol: </th>
+                <td>{{ entity.rol }}</td>
+            </tr>
+            <tr>
+                <th>Email: </th>
+                <td>{{ entity.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="record_actions form-actions">
+        <li>
+            <form>
+                <button class="btn-info" onclick="cargarEnGestion('{{ path('usuario') }}')">
+                    Volver a la lista
+                </button>
+            </form>
+        </li>
+        {% if admin==true %}  
+            <li>
+                <form id="eliminar" action="{{ path('usuario_delete', { 'id': entity.id }) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    {{ form_widget(delete_form) }}
+                    <button class="cargando" type="submit" >Eliminar Usuario</button>
+                </form>
+            </li>
+        {% endif %}
+        <li>
+            <button class="btn-inverse" onclick="cargarEnGestion('{{ path('usuario_edit', { 'id': entity.id }) }}');">
+                Editar
+            </button>
+        </li>
+    </ul>
+    <div id="dialog-eliminar" title="Mensaje de confirmación">
+        ¿Seguro que quiere eliminar este usuario?
+    </div>​
+    <script>
+        $("#dialog-eliminar").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons : {
+                 "Confirmar" : function() {
+                     return true;
+                 },
+                 "Cancelar" : function() {
+                   $(this).dialog("close");
+                   cargarYmostrar();
+                   return false;
+                 }
+             }
+        });
+        $(".cargando").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog-eliminar").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+        cargarYmostrar();
+    </script>
+</div>

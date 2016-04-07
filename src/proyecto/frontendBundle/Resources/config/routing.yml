@@ -1,0 +1,33 @@
+homepage:
+    pattern:  /
+    defaults: { _controller: proyectofrontendBundle:Default:index }
+
+login:
+    pattern:   /login
+    defaults:  { _controller: proyectofrontendBundle:Secured:login }
+    
+login_check:
+    pattern:   /login_check
+ 
+logout:
+    pattern: /logout
+    
+inicio:
+    pattern:   /Inicio
+    defaults:  { _controller: proyectofrontendBundle:Test:index }
+    
+uno:
+    pattern:   /Distraccion
+    defaults:  { _controller: proyectofrontendBundle:Test:distraccionuno } 
+    
+desarrollo:
+    pattern:   /Desarrollo
+    defaults:  { _controller: proyectofrontendBundle:Test:desarrollo } 
+
+fin:
+    pattern:   /Fin
+    defaults:  { _controller: proyectofrontendBundle:Test:fin } 
+
+informepublico:
+     resource: "@proyectofrontendBundle/Resources/config/routing/informe.yml"
+     prefix:   /informe

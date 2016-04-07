@@ -1,0 +1,113 @@
+<div id="frame"  class="marginBottom">
+    <h1>Creación de Fragmento</h1>
+
+    <form id="crear" action="{{ path('fragmento_create') }}" method="post" {{ form_enctype(form) }} novalidate>
+        <div class="control-group {% if form.nombre.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.nombre) }}
+            <div class="controls">
+                {{ form_widget(form.nombre) }}        
+                <span class="help-inline">{{ form_errors(form.nombre) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.primeraLetra.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.primeraLetra) }}
+            <div class="controls">
+                {{ form_widget(form.primeraLetra) }}        
+                <span class="help-inline">{{ form_errors(form.primeraLetra) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.ultimaLetra.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.ultimaLetra) }}
+            <div class="controls">
+                {{ form_widget(form.ultimaLetra) }}        
+                <span class="help-inline">{{ form_errors(form.ultimaLetra) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.dosEspaciosJuntos.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.dosEspaciosJuntos) }}
+            <div class="controls">
+                {{ form_widget(form.dosEspaciosJuntos) }}        
+                <span class="help-inline">{{ form_errors(form.dosEspaciosJuntos) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.tresLetrasJuntas.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.tresLetrasJuntas) }}
+            <div class="controls">
+                {{ form_widget(form.tresLetrasJuntas) }}        
+                <span class="help-inline">{{ form_errors(form.tresLetrasJuntas) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.ratioDadasEliminadas.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.ratioDadasEliminadas) }}
+            <div class="controls">
+                {{ form_widget(form.ratioDadasEliminadas) }}        
+                <span class="help-inline">{{ form_errors(form.ratioDadasEliminadas) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.letrasDadas.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.letrasDadas) }}
+            <div class="controls">
+                {{ form_widget(form.letrasDadas) }}        
+                <span class="help-inline">{{ form_errors(form.letrasDadas) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.ratioVocalesConsonantes.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.ratioVocalesConsonantes) }}
+            <div class="controls">
+                {{ form_widget(form.ratioVocalesConsonantes) }}        
+                <span class="help-inline">{{ form_errors(form.ratioVocalesConsonantes) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if form.idAdjetivo.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.idAdjetivo) }}
+            <div class="controls">
+                {{ form_widget(form.idAdjetivo) }}        
+                <span class="help-inline">{{ form_errors(form.idAdjetivo) }} </span>       
+            </div>
+        </div>
+        {{ form_rest(form) }} 
+        <p>
+            <button id="bottomcrear" class="cargando hide" type="submit">Crear</button>
+        </p>
+        <script> 
+            var nombre = document.getElementById("proyecto_backendbundle_fragmentotype_nombre");
+            nombre.addEventListener("change", function(){marcar_si_primera_es_letra("proyecto_backendbundle_fragmentotype_nombre","proyecto_backendbundle_fragmentotype_primeraLetra")});
+            nombre.addEventListener("change", function(){marcar_si_ultima_es_letra("proyecto_backendbundle_fragmentotype_nombre","proyecto_backendbundle_fragmentotype_ultimaLetra")});
+            nombre.addEventListener("change", function(){marcar_si_dos_espacios_juntos("proyecto_backendbundle_fragmentotype_nombre","proyecto_backendbundle_fragmentotype_dosEspaciosJuntos")});
+            nombre.addEventListener("change", function(){marcar_si_tres_letras_juntas("proyecto_backendbundle_fragmentotype_nombre","proyecto_backendbundle_fragmentotype_tresLetrasJuntas")});
+            nombre.addEventListener("change", function(){sacar_numero_letras_dadas("proyecto_backendbundle_fragmentotype_nombre","proyecto_backendbundle_fragmentotype_letrasDadas")});
+            nombre.addEventListener("change", function(){sacar_ratio_letras_dadas_eliminadas("proyecto_backendbundle_fragmentotype_nombre","proyecto_backendbundle_fragmentotype_ratioDadasEliminadas")});
+            nombre.addEventListener("change", function(){sacar_ratio_vocales_consonantes("proyecto_backendbundle_fragmentotype_nombre","proyecto_backendbundle_fragmentotype_ratioVocalesConsonantes")});
+
+        </script>
+    </form>
+
+    <ul class="record_actions hide">
+        <li>
+            <a id="volver" href="#" onclick="cargarEnGestion('{{ path('fragmento') }}')">
+                Volver a la lista
+            </a>
+        </li>
+    </ul>
+    <script>
+        cargarYmostrar();
+    </script>
+</div>
+
+<footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+    <div class="row">
+        <div class=" align-center">
+                <button id="bottomcrear2" class="win-command" onclick="$('#bottomcrear').click();">
+                    <span class="win-commandimage win-commandring">R</span>
+                    <span class="win-label">Crear</span>
+                </button>
+            <button class="win-command" onclick="$('#volver').click();">
+                <span class="win-commandimage win-commandring"></span>
+                <span class="win-label">Volver a la lista</span>
+            </button>
+
+        </div>
+
+
+    </div>
+</footer>

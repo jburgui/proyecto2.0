@@ -1,0 +1,35 @@
+proyecto\backendBundle\Entity\TiempoRespuesta:
+    type: entity
+    table: tiempo_respuesta
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        tiempoRespuesta:
+            type: float
+            nullable: false
+            column: tiempo_respuesta
+    manyToOne:
+        idPregunta:
+            targetEntity: Pregunta
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_pregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+        idParticipante:
+            targetEntity: Participante
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_participante:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

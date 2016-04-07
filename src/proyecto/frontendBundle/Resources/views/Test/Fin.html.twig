@@ -1,0 +1,38 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectofrontend/css/estilos1.css')}}" />
+{% endblock %}
+    
+{% block header %}
+{% endblock %}
+
+{% block center %}
+
+    <div class="container contenido">
+        {% block contenido %}
+            <div class="titulo">
+                <h1> {{ titulo }} </h1>
+            </div>
+            <div class="mensaje center align-center">
+                <span>
+                    <h1>¡¡¡FIN!!!</h1>    
+                    
+                    <p>Gracias por colaborar con nosotros ayudandonos a realizar este estudio.</p> 
+                    <p>Esperamos que no haya sido complicado.</p>
+                    <p>Cualquier duda o sugerencia que tengo por favor hágaselo saber a la persona encargada.</p> 
+                    <p>Pulse Salir para guardar sus respuestas y así finalizar su colaboración.</p>
+                    <p>De nuevo gracias.</p>
+                    <p>¡ADIOS!</p>
+                    
+                </span>
+            </div>
+            <div class="center ">
+                <button class="btn btn-large btn-primary btn-empezar" onclick="location.href='{{path('fin')}}'">
+                    Salir
+                </button>
+            </div>
+        {% endblock %}
+            <div class="mensaje"></div>
+    </div>
+{% endblock %}        

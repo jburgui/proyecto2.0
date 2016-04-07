@@ -1,0 +1,103 @@
+<div id="frame" class="marginBottom">
+    <h1>Editar Fragmento</h1>
+
+    <form id="editar" action="{{ path('fragmento_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }} novalidate>
+        <input type="hidden" name="_method" value="PUT" />
+        <div class="control-group {% if edit_form.nombre.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.nombre) }}
+            <div class="controls">
+                {{ form_widget(edit_form.nombre) }}        
+                <span class="help-inline">{{ form_errors(edit_form.nombre) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.primeraLetra.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.primeraLetra) }}
+            <div class="controls">
+                {{ form_widget(edit_form.primeraLetra) }}        
+                <span class="help-inline">{{ form_errors(edit_form.primeraLetra) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.ultimaLetra.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.ultimaLetra) }}
+            <div class="controls">
+                {{ form_widget(edit_form.ultimaLetra) }}        
+                <span class="help-inline">{{ form_errors(edit_form.ultimaLetra) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.dosEspaciosJuntos.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.dosEspaciosJuntos) }}
+            <div class="controls">
+                {{ form_widget(edit_form.dosEspaciosJuntos) }}        
+                <span class="help-inline">{{ form_errors(edit_form.dosEspaciosJuntos) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.tresLetrasJuntas.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.tresLetrasJuntas) }}
+            <div class="controls">
+                {{ form_widget(edit_form.tresLetrasJuntas) }}        
+                <span class="help-inline">{{ form_errors(edit_form.tresLetrasJuntas) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.ratioDadasEliminadas.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.ratioDadasEliminadas) }}
+            <div class="controls">
+                {{ form_widget(edit_form.ratioDadasEliminadas) }}        
+                <span class="help-inline">{{ form_errors(edit_form.ratioDadasEliminadas) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.letrasDadas.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.letrasDadas) }}
+            <div class="controls">
+                {{ form_widget(edit_form.letrasDadas) }}        
+                <span class="help-inline">{{ form_errors(edit_form.letrasDadas) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.ratioVocalesConsonantes.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.ratioVocalesConsonantes) }}
+            <div class="controls">
+                {{ form_widget(edit_form.ratioVocalesConsonantes) }}        
+                <span class="help-inline">{{ form_errors(edit_form.ratioVocalesConsonantes) }} </span>       
+            </div>
+        </div>
+        <div class="control-group {% if edit_form.idAdjetivo.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.idAdjetivo) }}
+            <div class="controls">
+                {{ form_widget(edit_form.idAdjetivo) }}        
+                <span class="help-inline">{{ form_errors(edit_form.idAdjetivo) }} </span>       
+            </div>
+        </div>
+        {{ form_rest(edit_form) }} 
+        <p>
+            <button id="bottomcrear" class="cargando hide" type="submit">Editar</button>
+        </p>
+    </form>
+
+    <ul class="record_actions form-actions hide">
+        <li>
+            <form>
+                <button id="volver" class="btn-info" onclick="cargarEnGestion('{{ path('fragmento') }}')">
+                    Volver a la lista
+                </button>
+            </form>
+        </li>
+    </ul>
+    <script>
+        cargarYmostrar();
+    </script>
+</div>
+
+<footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+    <div class="row">
+        <div class=" align-center">
+                <button id="bottomcrear2" class="win-command" onclick="$('#bottomcrear').click();">
+                    <span class="win-commandimage win-commandring">R</span>
+                    <span class="win-label">Guardar</span>
+                </button>
+            <button class="win-command" onclick="$('#volver').click();">
+                <span class="win-commandimage win-commandring"></span>
+                <span class="win-label">Volver a la lista</span>
+            </button>
+
+        </div>
+    </div>
+</footer>

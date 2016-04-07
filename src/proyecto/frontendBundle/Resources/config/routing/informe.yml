@@ -1,0 +1,10 @@
+informepublico:
+    pattern:  /{page}
+    defaults: { _controller: "proyectofrontendBundle:Informe:index", page: 1 }
+
+informepublico_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "proyectofrontendBundle:Informe:show" }
+
+
+

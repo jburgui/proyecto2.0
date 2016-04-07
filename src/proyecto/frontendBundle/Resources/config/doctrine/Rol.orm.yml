@@ -1,0 +1,24 @@
+proyecto\frontendBundle\Entity\Rol:
+    type: entity
+    table: rol
+    uniqueConstraints:
+        nombre:
+            columns:
+                - nombre
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nombre:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+    lifecycleCallbacks: {  }

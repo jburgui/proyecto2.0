@@ -1,0 +1,43 @@
+estudio_eliminar_datos:
+    pattern:  /eliminardatos
+    defaults: { _controller: "proyectobackendBundle:Estudio:eliminarDatos" }
+
+estudio_exportar_parte:
+    pattern:  /exportar
+    defaults: { _controller: "proyectobackendBundle:Estudio:exportarParte" }
+
+estudio_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "proyectobackendBundle:Estudio:show" }
+
+estudio_new:
+    pattern:  /new
+    defaults: { _controller: "proyectobackendBundle:Estudio:new" }
+
+estudio_create:
+    pattern:  /create
+    defaults: { _controller: "proyectobackendBundle:Estudio:create" }
+    requirements: { _method: post|get }
+
+estudio_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "proyectobackendBundle:Estudio:edit" }
+
+estudio_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "proyectobackendBundle:Estudio:update" }
+    requirements: { _method: post|put }
+
+estudio_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "proyectobackendBundle:Estudio:delete" }
+    requirements: { _method: post|delete }
+    
+estudio_des_activar:
+    pattern:  /{id}/des_activar
+    defaults: { _controller: "proyectobackendBundle:Estudio:des_activar" }
+    
+estudio:
+    pattern:  /{page}
+    defaults: { _controller: "proyectobackendBundle:Estudio:index", page: 1 }
+    

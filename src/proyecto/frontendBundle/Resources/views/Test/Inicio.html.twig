@@ -1,0 +1,83 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectofrontend/css/estilos1.css')}}" />
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectofrontend/css/jquery-ui.css')}}" />
+    
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+{% endblock %}    
+{% block header %}
+    <script>
+        //modificamos el alto del body si el explorador está actualizado
+        $(document).ready(function() {
+            $("body").css("overflow","auto");
+            if(Modernizr.inputtypes.date){
+                $("body").height("100%");
+            }else{
+                
+            }
+        });
+    </script>
+{% endblock %}
+    
+{% block center %}
+
+    <div class="container contenido">
+        {% block contenido %}
+            <div class="titulo">
+                <h1> {{ titulo }} </h1>
+            </div>
+            <div class="mensaje">
+                <span>
+                    <p>¡Bienvenido! </p>    
+                    
+                    <p>Gracias por colaborar con nosotros ayudandonos a realizar este estudio.
+                    No se preocupe si no sabe de que va, pues le iremos explicando todo lo que necesite saber.</p> 
+                    
+                    <p>Cuando esté listo/a pulse el siguiente botón y  ¡¡¡¡¡COMENCEMOS!!!!</p> 
+
+                </span>
+            </div>
+            <div class="center ">
+                <button class="btn btn-large btn-primary btn-empezar" onclick="location.href='{{path('desarrollo')}}'">Empezar</button>
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}   
+    
+    
+    {#Bloque footer#}
+{% block footer %}
+    <footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark" >
+        <div class="row center">
+                <a class="win-command" onclick="location.href='{{path('homepage')}}'">
+                  <span class="win-commandimage win-commandring">!</span>
+                  <span class="win-label">Salir</span>
+               </a>
+        </div>
+    </footer>
+    <div id="dialog-informacion" title="Mensaje de información" class="hide">
+        Atención: Su explorador está desactualizado. Por lo que le aconsejamos que lo actualice antes de continuar.
+        Si no, no verá las páginas correctamente.
+    </div>​
+    <script>
+        //si no soporta html5 cambiamos el atributo position
+        $(document).ready(function() {
+            if(!Modernizr.inputtypes.date){
+                $("footer").css("position", "relative");
+                $("#dialog-informacion").dialog({
+                    modal: true,
+                    buttons : {
+                         "Confirmar" : function() {
+                             $(this).dialog("close");
+                         }
+                     }
+                });
+                $('.ui-dialog-titlebar-close').remove();
+                $('.btn-empezar').css("top","0%");
+                $('body').css("height","70%");
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,131 @@
+.fondo {
+    overflow: auto;
+    padding: 0px !important;
+    width: 100%;
+    height: 100%;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#9595a3');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#9595a3')";
+    background-image: -moz-linear-gradient(top, #ffffff, #9595a3);
+    background-image: -ms-linear-gradient(top, #ffffff, #9595a3);
+    background-image: -o-linear-gradient(top, #ffffff, #9595a3);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#ffffff), to(#9595a3));
+    background-image: -webkit-linear-gradient(top, #ffffff, #9595a3);
+    background-image: linear-gradient(top, #ffffff, #9595a3);
+    margin: 0px;
+
+}
+
+html, body {
+    height: 100%;
+    *padding-bottom: 0px!important;
+}
+
+.botonestudioactivo{
+    text-align: center;
+    
+}
+ul{
+    list-style:none;
+}
+
+.impar{
+    background: #E2E4FF;
+}
+
+.navigation{
+    text-align: center;
+    
+}
+.pagination span a{
+
+padding: 2px 5px;
+margin: 0 3px;
+cursor: pointer;
+color: #333 !important;
+background: #E2E4FF;
+}
+
+.pagination span a:hover{
+    background-color: black;
+    color: white!important;
+}
+
+.form-filtro{
+    margin-top: 20px;
+}
+
+.texto-negro{
+    color:black!important;
+    text-shadow: none!important;
+}
+
+#cargando {
+    text-align: center;
+    padding: 100px;
+    clear:both;
+    background-color: #E2E4FF;
+    color: #2C83EF;
+    display: none;
+}
+
+.parte{
+    margin: 5px;
+    background: #E2E4FF!important;
+    min-width: 358px;
+}
+
+.close{
+    color: #000!important;
+    min-width: 0px;
+}
+
+.pregunta{
+    margin: 5px;
+}
+
+.subpregunta{
+    margin: 5px;
+    background: #E2E4FF!important;
+}
+
+.distraccion{
+    margin: 5px;
+    background: #E2E4FF!important;
+}
+
+.btn{
+    margin: 5px;    
+}
+
+#filtro{
+    margin-top: 5px;
+}
+
+.hidden{
+    display: none;
+}
+
+
+.error{
+    color: red;
+}
+.error2{
+    color: white!important;
+}
+
+.columna{
+    margin: 5px;
+    background: #E2E4FF!important;
+    min-width: 300px;    
+}
+
+.marginBottom {
+    margin-bottom: 88px;
+}
+
+.tabla tbody tr th{
+    text-align: right;
+}
+.tabla tbody tr td{
+    text-align: left;
+}

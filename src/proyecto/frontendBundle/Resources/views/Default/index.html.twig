@@ -1,0 +1,46 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectofrontend/css/estilos.css')}}" />
+{% endblock %}
+{% block javascripts %}
+{% endblock %}
+{% block center %}
+    <div class="center row-fluid">
+        <div class="botonesindex metro span10 offset2">
+            <a class="tile widepeek" href="#" onclick="location.href='{{path('inicio')}}'">
+                <div class="tile-image-wrapper">
+                    <img src="{{asset('bundles/proyectobackend/images/cuestionario.jpg')}}" alt="">
+                </div>
+                <div class="tile wide text">
+                    <div class="text">Acceder para realizar el estudio.</div>
+                </div>
+            </a>  
+            <a class="tile widepeek" href="#" onclick="location.href='{{path('informepublico')}}'">
+                <div class="tile-image-wrapper">
+                    <img src="{{asset('bundles/proyectobackend/images/informe.jpg')}}" alt="">
+                </div>
+                <div class="tile wide text">
+                    <div class="text">Acceder para consultar un informe.</div>
+                </div>
+            </a> 
+        </div>
+        <div class="row-fluid">
+            <div class="span2 offset10">
+                <button type="button" class="btn btn-inverse" onclick="location.href='{{path('admin')}}'" style="color: white;">
+                    <i class="icon-lock-stroke"> </i> Zona privada
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}   
+    <div class="navbar navbar-fixed-bottom" style="background-color: #2C83EF;color: black;">
+        <p style="float: left">
+             **(Se recomienda tener la versión más reciente de su navegador para disfrutar de la aplicación en su totalidad y tener activadas las cookies)
+            
+        <p>
+        <span style="float: right">Design By jburgui@hotmail.com </span>
+    </div>
+   
+{% endblock %}
+    

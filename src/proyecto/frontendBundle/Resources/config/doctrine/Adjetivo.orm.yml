@@ -1,0 +1,68 @@
+proyecto\frontendBundle\Entity\Adjetivo:
+    type: entity
+    table: adjetivo
+    uniqueConstraints:
+        nombre:
+            columns:
+                - nombre
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nombre:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+        tipo:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+        frecTeorica:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            column: frec_teorica
+        numLetras:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: num_letras
+        numSilabas:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: num_silabas
+        categoria:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+        frecUsoComoAdj:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            column: frec_uso_como_adj
+        numSignificados:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: num_significados
+    lifecycleCallbacks: {  }

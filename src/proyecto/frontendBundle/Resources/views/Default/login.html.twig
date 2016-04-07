@@ -1,0 +1,45 @@
+{% extends 'proyectofrontendBundle:Default:index.html.twig' %}
+{% block center %}
+    <div class="container">
+        
+        {% if error %}
+            <div id="error" class="alert alert-error row-fluid" >
+                <button type="button" class="close" data-dismiss="alert"></button>
+                <h4>ERROR!</h4>
+                <span>{{ error.message|trans () }}</span>
+            </div>
+        {% endif %}
+        <form class="form-horizontal" action="{{ path('login_check') }}" method="post">
+            <div id="login" class="control-group">
+                <div class="control-group">
+                    <label class="control-label" for="username">Usuario: </label>
+                    <div class="controls">
+                      <input type="text" id="username" placeholder="Usuario" name="_username" value="{{ last_username }}">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="password">Contraseña: </label>
+                    <div class="controls">
+                      <input type="password" id="password" placeholder="Contraseña" name="_password">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit">Iniciar sesión</button>
+                </div>
+            </div>
+            
+        </form>
+        <div class="control-group">
+            <div class="controls">
+                <button type="button" style="color: white;" name="Salir" class="btn btn-inverse" onclick="location.href ='{{path('homepage')}}'">Volver </button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        if(document.getElementById('error')){
+            document.getElementById('login').className="control-group error";
+        }
+    </script>
+{% endblock %}

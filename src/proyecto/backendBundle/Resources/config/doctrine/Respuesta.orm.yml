@@ -1,0 +1,36 @@
+proyecto\backendBundle\Entity\Respuesta:
+    type: entity
+    table: respuesta
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        respuesta:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+    manyToOne:
+        idSubpregunta:
+            targetEntity: Subpregunta
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_subpregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+        idParticipante:
+            targetEntity: Participante
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_participante:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

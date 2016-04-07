@@ -1,0 +1,27 @@
+proyecto\backendBundle\Entity\Distraccion:
+    type: entity
+    table: distraccion
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        numOrden:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_orden
+    manyToOne:
+        idEstudio:
+            targetEntity: Estudio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estudio:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,207 @@
+{% extends 'proyectofrontendBundle:Default:index.html.twig' %}
+{% block javascripts %}
+    
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{asset('bundles/proyectofrontend/js/excanvas.js')}}"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="{{asset('bundles/proyectofrontend/js/jquery.jqplot.min.js')}}"></script>
+    <script language="javascript" type="text/javascript" src="{{asset('bundles/proyectofrontend/js/jqplot.barRenderer.js')}}"></script>
+    <script language="javascript" type="text/javascript" src="{{asset('bundles/proyectofrontend/js/jqplot.categoryAxisRenderer.js')}}"></script>
+    <script language="javascript" type="text/javascript" src="{{asset('bundles/proyectofrontend/js/jqplot.pointLabels.min.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('bundles/proyectofrontend/css/jquery.jqplot.css')}}" />
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <!--[if lt IE 9]><link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/jquery-ui.css')}}" /><![endif]-->
+    
+{% endblock %}
+{% block center %}
+    <div class="container-fluid">
+        <h1>Informe</h1>
+        <div class="row offset1">
+            <h2>Nombre del Estudio: {{ entity.idParteEstudio.idEstudio.nombre }}</h2>
+            <h3>Parte del Estudio: {{ entity.idParteEstudio.nombre }}</h3>
+        </div>
+        
+        <div id="tabs" class="container-fluid" style="margin-top: 10px;margin-bottom: 88px;">
+            <ul class="nav nav-tabs">
+                {%if grafica == 1 %}
+                    <li>
+                        <a href="#grafica">Gráfica</a>
+                    </li>
+                {%endif%}
+                <li >
+                    <a href="#tabla">Tabla</a>
+                </li>
+            </ul>
+            <div id="tabla">
+                
+                <table class="table">
+                <thead>
+                    <tr>
+                        {% for columna in cabecera %}
+                            <th {%if loop.index0 == 0%}style="width: 135px;"{%endif%}>{{ columna }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fila in tabla %} 
+                        <tr style="border-top: 1px solid #dddddd!important;" {% if loop.index is odd %}class="impar"{% endif %}>
+                            {% for celda in fila %} 
+                                <td>{{ celda }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                 </tbody>
+               </table>
+                
+            </div>
+            {%if grafica == 1 %}
+                <div id="grafica">
+                    <div>
+                        <h4>{{ entity.tituloGrafico }} {%if tipoPregunta > 1 %}({{ tratamiento }}){%endif%}</h4>
+                    </div>
+                    <div style="overflow: auto; text-align: center;">
+                        <div id="graficaJqPlot" style="border: #dddddd solid 1px;height: 400px; min-width: 600px"></div>
+                    </div>
+                    <div style="height: 50px;"></div>
+                </div>
+            {%endif%}
+        </div>  
+        
+
+        
+        
+        
+        <ul class="record_actions hide">
+            <li>
+                <button id="volver" class="btn-inverse" >
+                    <a  href="{{ path('informepublico') }}" onclick="">
+                    Volver a la lista  
+                </button>
+            </a>
+            </li>
+        </ul>
+    </div>
+    <script>
+        
+        $('#tabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+        
+        $(document).ready(function(){
+            $( "#tabs" ).tabs();
+            {%if grafica == 1 %}
+                var s1 = [{% for dato in ejeY %}{%if loop.index0 == 0%}{{dato}}{%else%},{{dato}}{%endif%}{%endfor%}];
+                var ticks = [{% for dato in ejeX %}{%if loop.index0 == 0%}'{{dato}}'{%else%},'{{dato}}'{%endif%}{%endfor%}];
+                $("#graficaJqPlot").css('width',75*{{ ejeX|length }});
+                {%if tipoPregunta == 1 %}
+                    
+
+                    var plot1 = $.jqplot('graficaJqPlot', [s1], {
+                        seriesDefaults:{
+                            renderer:$.jqplot.BarRenderer,
+                            rendererOptions: {fillToZero: true}
+                        },
+                        axes: {
+                            xaxis: {
+                                renderer: $.jqplot.CategoryAxisRenderer,
+                                ticks: ticks
+                            }
+                        }
+                    });
+                {%endif%}
+                {%if tipoPregunta == 2 %}
+                    var plot1 = $.jqplot('graficaJqPlot', [s1], {
+                        seriesDefaults:{
+                            renderer:$.jqplot.BarRenderer,
+                            rendererOptions: {fillToZero: true}
+                        },
+                        axes: {
+                            xaxis: {
+                                renderer: $.jqplot.CategoryAxisRenderer,
+                                ticks: ticks
+                            },
+                        }
+                    });
+                {%endif%}
+                {%if tipoPregunta == 3 %}
+                    $("#graficaJqPlot").css('width',100*{{ ejeX|length }});
+                    var s2 = [{% for dato in ejeZ %}{%if loop.index0 == 0%}{{dato}}{%else%},{{dato}}{%endif%}{%endfor%}];
+                    var s3 = [{% for dato in ejeW %}{%if loop.index0 == 0%}{{dato}}{%else%},{{dato}}{%endif%}{%endfor%}];
+                    plot3 = $.jqplot('graficaJqPlot', [s1, s2, s3], {
+                        stackSeries: true,
+                        captureRightClick: true,
+                        seriesDefaults:{
+                          renderer:$.jqplot.BarRenderer,
+                          rendererOptions: {
+                              barMargin: 30,
+                              highlightMouseDown: true   
+                          },
+                          pointLabels: {show: true}
+                        },
+                        series:[
+                            {label:'Aciertos'},
+                            {label:'Fallos omisión'},
+                            {label:'Fallos comisión'}
+                        ],
+                        legend: {
+                            show: true,
+                            placement: 'outsideGrid'
+                        },
+                        axes: {
+                          xaxis: {
+                              renderer: $.jqplot.CategoryAxisRenderer,
+                              ticks: ticks
+                          },
+                          yaxis: {
+                            padMin: 0
+                          }
+                        },     
+                      });
+                {%endif%}
+            {%endif%}
+                
+                
+            if (!Modernizr.canvas){
+                $("#dialog-informacion").dialog({
+                    modal: true,
+                    buttons : {
+                         "Confirmar" : function() {
+                             $(this).dialog("close");
+                         }
+                     }
+                });
+                $('.ui-dialog-titlebar-close').remove();
+            }
+        });
+
+    </script>
+    <div id="dialog-informacion" title="Mensaje de información" class="hide">
+        Atención: Su explorador está desactualizado. Por lo que le aconsejamos que lo actualice antes de continuar.
+        Si no, no verá las páginas correctamente, y las gráficas puede que no se muestren bien.
+    </div>​
+{% endblock %}
+
+    
+{#Bloque footer#}
+{% block footer %}
+    <footer class="win-commandlayout navbar-fixed-bottom win-ui-dark" >
+        <div class="row">
+            <div class=" align-center">
+                <a class="win-command" onclick="location.href='{{path('homepage')}}'">
+                  <span class="win-commandimage win-commandring">!</span>
+                  <span class="win-label">Salir</span>
+               </a>
+                <button class="win-command">
+                    <a  href="{{ path('informepublico') }}" onclick="">
+                        <span class="win-commandimage win-commandring"></span>
+                        <span class="win-label">Volver a la lista</span>
+                    </a>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}
+    

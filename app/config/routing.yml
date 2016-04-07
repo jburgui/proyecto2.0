@@ -1,0 +1,8 @@
+proyectofrontend:
+    resource: "@proyectofrontendBundle/Resources/config/routing.yml"
+    prefix:   /
+
+proyectobackend:
+    resource: "@proyectobackendBundle/Resources/config/routing.yml"
+    prefix:   /
+

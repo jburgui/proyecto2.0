@@ -1,0 +1,103 @@
+<div id="frame" class="marginBottom">
+    <h1>Editar Adjetivo</h1>
+
+    <form id="editar" action="{{ path('adjetivo_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }} novalidate>
+        <input type="hidden" name="_method" value="PUT" />
+<div class="control-group {% if edit_form.nombre.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.nombre) }}
+            <div class="controls">
+                {{ form_widget(edit_form.nombre) }}        
+                <span class="help-inline">{{ form_errors(edit_form.nombre) }} </span>       
+            </div>
+        </div>  
+        <div class="control-group {% if edit_form.tipo.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.tipo) }}
+            <div class="controls">
+                {{ form_widget(edit_form.tipo) }}        
+                <span class="help-inline">{{ form_errors(edit_form.tipo) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if edit_form.frecTeorica.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.frecTeorica) }}
+            <div class="controls">
+                {{ form_widget(edit_form.frecTeorica) }}        
+                <span class="help-inline">{{ form_errors(edit_form.frecTeorica) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if edit_form.numLetras.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.numLetras) }}
+            <div class="controls">
+                {{ form_widget(edit_form.numLetras) }}        
+                <span class="help-inline">{{ form_errors(edit_form.numLetras) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if edit_form.numSilabas.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.numSilabas) }}
+            <div class="controls">
+                {{ form_widget(edit_form.numSilabas) }}        
+                <span class="help-inline">{{ form_errors(edit_form.numSilabas) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if edit_form.categoria.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.categoria) }}
+            <div class="controls">
+                {{ form_widget(edit_form.categoria) }}        
+                <span class="help-inline">{{ form_errors(edit_form.categoria) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if edit_form.frecUsoComoAdj.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.frecUsoComoAdj) }}
+            <div class="controls">
+                {{ form_widget(edit_form.frecUsoComoAdj) }}        
+                <span class="help-inline">{{ form_errors(edit_form.frecUsoComoAdj) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if edit_form.numSignificados.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.numSignificados) }}
+            <div class="controls">
+                {{ form_widget(edit_form.numSignificados) }}        
+                <span class="help-inline">{{ form_errors(edit_form.numSignificados) }} </span>       
+            </div>
+        </div>  
+        {#rest para que no de error con el CSRF por si quedan campos que renderizar#}
+        {{ form_rest(edit_form) }} 
+        <p>
+            <button id="bottomcrear" class="cargando hide" type="submit">Editar</button>
+        </p>
+        <script> 
+            var nombre = document.getElementById("proyecto_backendbundle_adjetivotype_nombre");
+            nombre.addEventListener("change", function(){longitud_campouno_en_campodos("proyecto_backendbundle_adjetivotype_nombre","proyecto_backendbundle_adjetivotype_numLetras")});
+            
+        </script>
+    </form>
+
+    <ul class="record_actions form-actions hide">
+        <li>
+            <form>
+                <button id="volver" class="btn-info" onclick="cargarEnGestion('{{ path('adjetivo') }}')">
+                    Volver a la lista
+                </button>
+            </form>
+        </li>
+    </ul>
+    <script>
+        cargarYmostrar();
+    </script>
+</div>
+
+
+<footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+    <div class="row">
+        <div class=" align-center">
+                <button id="bottomcrear2" class="win-command" onclick="$('#bottomcrear').click();">
+                    <span class="win-commandimage win-commandring">R</span>
+                    <span class="win-label">Guardar</span>
+                </button>
+            <button class="win-command" onclick="$('#volver').click();">
+                <span class="win-commandimage win-commandring"></span>
+                <span class="win-label">Volver a la lista</span>
+            </button>
+
+        </div>
+    </div>
+</footer>

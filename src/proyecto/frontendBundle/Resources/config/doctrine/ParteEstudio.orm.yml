@@ -1,0 +1,90 @@
+proyecto\frontendBundle\Entity\ParteEstudio:
+    type: entity
+    table: parte_estudio
+    indexes:
+        id_tipo_pregunta:
+            columns:
+                - id_tipo_pregunta
+        id_estudio:
+            columns:
+                - id_estudio
+    uniqueConstraints:
+        nombre:
+            columns:
+                - nombre
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nombre:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+        numOrden:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: num_orden
+        numPreguntas:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: num_preguntas
+        titulo:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+        guardarTiempoRespuesta:
+            type: boolean
+            nullable: false
+            comment: ''
+            default: '0'
+            column: guardar_tiempo_respuesta
+        numPreguntasDePrueba:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+            default: '0'
+            column: num_preguntas_de_prueba
+    manyToOne:
+        idTipoPregunta:
+            targetEntity: TipoPregunta
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_pregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+        idEstudio:
+            targetEntity: Estudio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_estudio:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        pantallasBienvenida:
+            targetEntity: pantallaBienvenida
+            mappedBy: idParteEstudio
+            cascade: [persist]
+        preguntas:
+            targetEntity: pregunta
+            mappedBy: idParteEstudio
+            cascade: [persist]
+    lifecycleCallbacks: {  }

@@ -1,0 +1,17 @@
+proyecto\backendBundle\Entity\TipoRespuesta:
+    type: entity
+    table: tipo_respuesta
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        nombre:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+    lifecycleCallbacks: {  }

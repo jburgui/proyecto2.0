@@ -1,0 +1,46 @@
+proyecto\frontendBundle\Entity\Respuesta:
+    type: entity
+    table: respuesta
+    indexes:
+        id_subpregunta:
+            columns:
+                - id_subpregunta
+        id_participante:
+            columns:
+                - id_participante
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        respuesta:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+    manyToOne:
+        idSubpregunta:
+            targetEntity: Subpregunta
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_subpregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+        idParticipante:
+            targetEntity: Participante
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_participante:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

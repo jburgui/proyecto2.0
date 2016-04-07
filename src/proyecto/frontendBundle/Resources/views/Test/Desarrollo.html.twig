@@ -1,0 +1,408 @@
+{% extends 'proyectofrontendBundle:Test:Inicio.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{asset('bundles/proyectofrontend/js/jquery_validate.js')}}"></script>
+    
+{% endblock %}
+
+{% block contenido %}
+    <div class="titulo">
+        <h1> {{ titulo }} {{ aux }} </h1>
+    </div>
+    {#Información de la sección actual#}
+    <div class="info-Seccion">
+        <label>Seccion {{ barSeccion.seccion }} de {{ barSeccion.total }} </label>
+        <div class="progress progress-success medio50 ">
+            <div class="bar" style="width: {{ barSeccion.porcentaje }}"></div>
+        </div>
+        <h3>{{ nombreParte }}</h3>
+    </div>
+    {#Si no es pantalla de Bienvenida#}
+    {% if mensaje is null %}
+        <div id="bloquePregunta">
+            <div class="info-pregunta">
+                {# se utiliza raw para que el codigo de etiquetas se muestre #}
+                <h4> {{ pregunta | raw }} </h4>
+                {% if errorValidacion != '' %}
+                    <div class="control-group  }error alert alert-error row-fluid">
+                        <div class="controls">
+                            <span class="help-inline">{{ errorValidacion | raw }} </span>       
+                        </div>
+                    </div> 
+                {% endif %}
+            </div>
+            <form id="respuestas" action="{{ path('desarrollo') }}" method="post" >
+                    <script>
+                        $(document).ready(function() {
+                            $("#respuestas").validate({});
+                            if(Modernizr.inputtypes.range){
+                                //centramos el bloque de las subpreguntas
+                                var ancho =0;
+                                //buscamos el ancho mayor entre las respuestas y la info-subpregunta
+                                $(".respuesta").css("position","absolute");
+                                $(".respuesta").each(function() {
+                                    if($(this).width()> ancho)
+                                        ancho=$(this).width();
+                                });
+                                $(".respuesta").css("position","relative");
+                                
+                                $(".info-subpregunta ").css("position","absolute");
+                                $(".info-subpregunta ").each(function() {
+                                    if($(this).width()> ancho)
+                                        ancho=$(this).width();
+                                });
+                                $(".info-subpregunta ").css("position","relative");
+                                
+                                var ancho1 = $(".titulo").width();
+                                ancho = (ancho1- ancho-8)/2;
+                                $(".respuesta").css("position","relative");
+                                
+                                $("#subpreguntas").css("margin-left",ancho);
+                                $("#subpreguntas").css("margin-right",ancho);
+                            }else{
+                                $("#subpreguntas").css("text-align","center");
+                            }
+                            
+                            $('input:visible:enabled:first').focus();
+                        });
+                        
+                    </script>
+                    {% if flagGuardarTiempo == true %}
+                        {#campo para guardar el tiempo que tarda en responder a la pregunta#}
+                        <input type="hidden" id="tiempo" name="tiempo" value="0">
+                    {% endif %}
+                    
+                    <div id="subpreguntas">
+                        {% for subpregunta in subpreguntas %}
+                            <div class="row-fluid subpregunta">
+                                <div class="info-subpregunta ">
+                                    {%if subpregunta.subpregunta is not null%}
+                                        <span>{{ subpregunta.subpregunta }}:</span>
+                                    {% endif %}
+                                </div>
+                                <input id="tipo{{ loop.index0 }}" name="tipo{{ loop.index0 }}" name="tipo"  type="hidden" readonly="true" value="{{ subpregunta.tipoRespuesta }}">
+                                <input id="id{{ loop.index0 }}" name="id{{ loop.index0 }}"  type="hidden" readonly="true" value=" {{ subpregunta.id }} ">
+                                <div class="respuesta ">
+                                    {% if subpregunta.tipoRespuesta == 1 %}
+                                        <input type="text" id="sub{{ loop.index0 }}" name="sub{{ loop.index0 }}"  value="{% if reponerRespuestas is not empty %}{{reponerRespuestas[loop.index0 ]}}{% endif %}">
+
+                                    {% elseif subpregunta.tipoRespuesta== 2 %}    
+                                        {% for opcion in subpregunta.opciones %}
+                                            <div> 
+                                                <input checked required type="radio" id="sub{{ loop.parent.loop.index0 }}" name="sub{{ loop.parent.loop.index0 }}" value="{{ loop.index }}" style="position: static;opacity: 1;"><label style="display: inline"> {{ opcion.valor }} </label>
+                                            </div>
+                                            {% if reponerRespuestas is not empty %}
+                                                {% if  loop.index  == reponerRespuestas[loop.parent.loop.index0] %}
+                                                    <script>
+                                                        $(document).ready(function() {
+                                                            $("form input:radio[name=sub{{ loop.parent.loop.index0 }}]").filter('[value={{ reponerRespuestas[loop.parent.loop.index0] }}]').click();
+                                                        });
+                                                    </script>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        
+                                    {% elseif subpregunta.tipoRespuesta== 3 %}
+                                        <div>
+                                            <div class="" style="float: left;width: 45%">{{ subpregunta.rangoMin }}</div>
+                                            <div class="" style="display: inline;"><span id="numero" style="color: skyblue;"></span></div>
+                                            <div class="" style="float: right;text-align: right;display: inline;">{{ subpregunta.rangoMax }}</div>
+                                        </div>
+                                        <input value="{% if reponerRespuestas is not empty %}{{reponerRespuestas[loop.index0 ]}}{% endif %}" type="range" min="{{ subpregunta.rangoMin }}" max="{{ subpregunta.rangoMax }}"  step="0.01" style="width:100%" id="sub{{ loop.index0 }}" name="sub{{ loop.index0 }}" required>
+                                        <script>
+
+                                            $(document).ready(function() {
+                                                if(!Modernizr.inputtypes.range){
+                                                    $("#dialog-range").dialog({
+                                                        modal: true,
+                                                        buttons : {
+                                                             "Confirmar" : function() {
+                                                                 $(this).dialog("close");
+                                                             }
+                                                         }
+                                                    });
+                                                    $('.ui-dialog-titlebar-close').remove();
+                                                };
+                                            });
+                                        </script>
+                                        <div id="dialog-range" title="Mensaje de información" class="hide">
+                                            Su explorador es demasiado antiguo, una de las siguientes preguntas no se visualizará como es debido.
+                                            Introduzca en la casilla un valor numérico comprendido entre los dos valores numéricos colocados encima de la casilla.
+                                        </div>​
+                                    {% elseif subpregunta.tipoRespuesta == 4 %}  
+                                        <input type="number" min="0" id="sub{{ loop.index0 }}" name="sub{{ loop.index0 }}" value="{% if reponerRespuestas is not empty %}{{reponerRespuestas[loop.index0 ]}}{% endif %}">
+                                        <script>
+                                            $( "#respuestas" ).validate({
+                                                rules: {
+                                                    sub{{ loop.index0 }}: {
+                                                        digits: true,
+                                                        required: true
+                                                    }
+                                                },
+                                                messages: {
+                                                    sub{{ loop.index0 }}: {
+                                                        required: "Campo numérico obligatorio."
+                                                    }
+                                                }
+                                            });
+                                       </script>
+                                {% elseif subpregunta.tipoRespuesta == 5 %} 
+                                    <input type="date" id="sub{{ loop.index0 }}" name="sub{{ loop.index0 }}" placeholder="dia/mes/año"value="{% if reponerRespuestas is not empty %}{{reponerRespuestas[loop.index0 ]}}{% endif %}"  required>
+                                    <script>
+                                        $(document).ready(function() {
+                                            if(!Modernizr.inputtypes.date){
+                                                $("#dialog-date").dialog({
+                                                    modal: true,
+                                                    buttons : {
+                                                         "Confirmar" : function() {
+                                                             $(this).dialog("close");
+                                                         }
+                                                     }
+                                                });
+                                                $('.ui-dialog-titlebar-close').remove();
+                                            };
+                                        });
+                                    </script>
+                                    <div id="dialog-date" title="Mensaje de información" class="hide">
+                                        Su explorador es demasiado antiguo, una de las siguientes preguntas no se visualizará como es debido.
+                                        Una de las preguntas es una fecha. conteste con el siguiente formato: "01/01/2000"
+                                    </div>​
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                {#mostramos el valor del range al cambiar#}
+                <script>
+                    $(function(){
+                        if(Modernizr.inputtypes.range){
+                            $("input[type='range']").change(function () {
+                                $(this).parent().find('span').text($(this).val());
+                            });
+                                $("input[type='range']").trigger('change');
+                        }
+                    });
+                </script>
+            </form>
+            {#Información de la pregunta actual#}
+            <div class="align-right" style="padding: 2%;">
+                <label>Pregunta {{ barPregunta.pregunta }} de {{ barPregunta.total }} </label>
+                <div class="progress progress-success left10" style="height: 15px;">
+                    <div class="bar" style="width: {{ barPregunta.porcentaje }}"></div>
+                </div>
+            </div>
+        </div>
+        {#Si hay que guardar el tiempo de respuesta#}
+        {% if flagGuardarTiempo == true %}
+            
+            {#div informativo sobre el espacio de descanso entre preguntas que se guarda el tiempo#}
+            <div id="bloqueDescanso">
+                <div class="mensaje align-center descanso">
+                    <h4> Esta es la pantalla de descanso.A continuación se le mostrará una pregunta. Intente contestar 
+                    lo más rapidamente que pueda y pulse "enter" o click en siguiente para continuar.</h4>
+                        <h3>Cuando esté preparado...</h3>
+                </div>
+                <div class="row-fluid">
+                    <div class="offset8">
+                        <h4>...pulse cualquier tecla del teclado para mostrar la pregunta...</h4>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(function(){
+                    $("#siguiente").hide();
+                    $("#bloquePregunta").hide();
+                    $("body").keypress(function(tecla) {
+                        
+                        
+                        
+                        $('body').unbind('keypress');
+                        $('form').unbind('keypress');
+                        //guardamos la hora actual
+                        $('#tiempo').val((new Date()).getTime());
+                        
+                        $("#siguiente").show();
+                        $("#bloquePregunta").show();
+                        $("#bloqueDescanso").hide();
+                        $("#sub0").focus();
+                        //devolvemos false para que la tecla pulsada no se ponga en el input del foco
+                        return false;
+                        
+                        
+                    });
+                    $("input").keydown(function(tecla){
+                        if (tecla.keyCode == 13) { 
+                            //cuando se pulse "enter" se captura el evento y se calcula el tiempo
+                            $('#tiempo').val(((new Date()).getTime()-$('#tiempo').val())/1000);
+                            $("#siguiente").click();
+                        }
+                    });
+                });
+            </script>
+        {% endif %}
+        
+    {#Si es pantalla de bienvenida#}    
+    {% else %}
+            <div id="bloqueMensaje">
+            <div class="mensaje align-center">
+                <h4> {{ mensaje }} </h4>
+            </div>
+            <div class="offset8 marginTop40">
+                <h4>Pulse siguiente para continuar...</h4>
+            </div>
+        </div>
+    {% endif %}
+    {# si es sección de prueba #}
+    {% if flagPrueba == 1 %}    
+        <div id="bloquePrueba">
+                <div class="mensaje align-center">
+                    <h2> ATENCIÓN:<br>
+                    La siguiente sección es de prueba, lo que significa que sirve para que usted se famirialice con el formato de la
+                    prueba. Estas respuestas no se guardarán.</h2>
+                        
+                </div>
+                <div class="offset8 marginTop40">
+                    <h4>Pulse siguiente para comenzar.</h4>
+                </div>
+        </div>
+        <script>
+            $(function(){
+                $("#bloquePregunta").hide();
+                $("#bloqueDescanso").hide();
+                $("#bloqueMensaje").hide();
+                $("#siguiente").hide();
+                $("#siguiente1").click(function(){
+                    $("#bloquePrueba").hide();
+                    $("#siguiente1").hide();
+                    $("#siguiente").show();
+                    $("#bloqueMensaje").show();
+                    if ($('#bloqueDescanso').length){
+                        $("#bloqueDescanso").show();
+                    }else{
+                        $("#bloquePregunta").show();
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+    {# si acabamos de acabar la sección de prueba y ahora empieza la de verdad #}
+    {% if flagPrueba == 2 %}    
+        <div id="bloquePrueba">
+                <div class="mensaje align-center">
+                    <h2> ATENCIÓN:<br>
+                    La siguiente sección ya NO es de prueba, lo que significa que a partir de ahora, sus respuestas se guardarán.</h2>
+                        
+                </div>
+                <div class="offset8 marginTop40">
+                    <h4>Pulse siguiente para comenzar.</h4>
+                </div>
+        </div>
+        <script>
+            $(function(){
+                $("#bloquePregunta").hide();
+                $("#bloqueDescanso").hide();
+                $("#bloqueMensaje").hide();
+                $("#siguiente").hide();
+                $("#siguiente1").click(function(){
+                    $("#bloquePrueba").hide();
+                    $("#siguiente1").hide();
+                    $("#siguiente").show();
+                    $("#bloqueMensaje").show();
+                    if ($('#bloqueDescanso').length){
+                        $("#bloqueDescanso").show();
+                    }else{
+                        $("#bloquePregunta").show();
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{#Bloque footer#}
+{% block footer %}
+    <footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark" style="height: 88px;">
+        <div class="row" >
+            <div class=" align-left span6">
+                <a id="salir" class="win-command">
+                  <span class="win-commandimage win-commandring">!</span>
+                  <span class="win-label">Salir</span>
+               </a>
+                    <a id="reiniciar" class="win-command">
+                    <span class="win-commandimage win-commandring"></span>
+                    <span class="win-label">Reiniciar</span>
+                </a>
+            </div>
+            <div id="siguiente" class="align-right span6">
+                <a  class="win-command" onclick="
+                        {% if mensaje is null %}$('#respuestas').submit();{% else %}location.href='{{path('desarrollo')}}'{% endif %}
+                    ">
+                    <span class="win-commandimage win-commandring"></span>
+                    <span class="win-label">Siguiente</span>
+                </a>           
+            </div>
+            {% if flagPrueba > 0 %} 
+                <div id="siguiente1" class="align-right span6">
+                    <a  class="win-command" onclick="$(this).hide();">
+                        <span class="win-commandimage win-commandring"></span>
+                        <span class="win-label">Siguiente</span>
+                    </a>           
+                </div>
+            {% endif %}
+        </div>
+            
+        <!--cuadros de dialogo para avisar al salir o reiniciar -->
+        <div id="dialog-salir" title="Mensaje de confirmación">
+        ¿Seguro que quiere volver a la página principal? Los datos se perderán.
+        </div>​
+        <div id="dialog-reiniciar" title="Mensaje de confirmación">
+            ¿Seguro que quiere volver a la página de inicio? Los datos se perderán.
+        </div>​
+        <script>
+            $("#dialog-salir").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons : {
+                     "Confirmar" : function() {
+                         location.href='{{path('homepage')}}';
+                     },
+                     "Cancelar" : function() {
+                       $(this).dialog("close");
+                     }
+                 }
+            });
+            $("#salir").on("click", function(e) {
+                e.preventDefault();
+                $("#dialog-salir").dialog("open");
+                $('.ui-dialog-titlebar-close').remove();
+            });
+            $("#dialog-reiniciar").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons : {
+                     "Confirmar" : function() {
+                         location.href='{{path('inicio')}}';
+                     },
+                     "Cancelar" : function() {
+                       $(this).dialog("close");
+                     }
+                 }
+            });
+            $("#reiniciar").on("click", function(e) {
+                e.preventDefault();
+                $("#dialog-reiniciar").dialog("open");
+                $('.ui-dialog-titlebar-close').remove();
+            });
+            //si no soporta html5 cambiamos el atributo position
+            $(document).ready(function() {
+                if(!Modernizr.inputtypes.date){
+                    $("footer").css("position", "relative");
+                    
+                }
+            });
+        </script>
+    </footer>
+{% endblock %}

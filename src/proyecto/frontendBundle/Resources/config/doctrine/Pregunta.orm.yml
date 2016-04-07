@@ -1,0 +1,58 @@
+proyecto\frontendBundle\Entity\Pregunta:
+    type: entity
+    table: pregunta
+    indexes:
+        id_parte_estudio:
+            columns:
+                - id_parte_estudio
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        numPregunta:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: num_pregunta
+        pregunta:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+        numSubpreguntas:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: num_subpreguntas
+        repetirPregunta:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            default: '0'
+            column: repetir_pregunta
+    manyToOne:
+        idParteEstudio:
+            targetEntity: ParteEstudio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_parte_estudio:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        subpreguntas:
+            targetEntity: Subpregunta
+            mappedBy: idPregunta
+            cascade: [persist]
+    lifecycleCallbacks: {  }

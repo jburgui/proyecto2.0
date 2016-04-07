@@ -1,0 +1,26 @@
+proyecto\backendBundle\Entity\PantallaBienvenida:
+    type: entity
+    table: pantalla_bienvenida
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        mensaje:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+    manyToOne:
+        idParteEstudio:
+            targetEntity: ParteEstudio
+            cascade: {  }
+            inversedBy: pantallasBienvenida
+            joinColumns:
+                id_parte_estudio:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

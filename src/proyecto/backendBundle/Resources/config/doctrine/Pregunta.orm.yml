@@ -1,0 +1,46 @@
+proyecto\backendBundle\Entity\Pregunta:
+    type: entity
+    table: pregunta
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        numPregunta:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_pregunta
+        pregunta:
+            type: string
+            length: 255
+            fixed: false
+            nullable: true
+        numSubpreguntas:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_subpreguntas
+        repetirPregunta:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: repetir_pregunta
+    manyToOne:
+        idParteEstudio:
+            targetEntity: ParteEstudio
+            cascade: {  }
+            inversedBy: preguntas
+            joinColumns:
+                id_parte_estudio:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        subpreguntas:
+            targetEntity: Subpregunta
+            mappedBy: idPregunta
+            cascade: [persist]
+    lifecycleCallbacks: {  }

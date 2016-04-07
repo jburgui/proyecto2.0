@@ -1,0 +1,34 @@
+proyecto\frontendBundle\Entity\OpcionRespuesta:
+    type: entity
+    table: opcion_respuesta
+    indexes:
+        id_subpregunta:
+            columns:
+                - id_subpregunta
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        valor:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+    manyToOne:
+        idSubpregunta:
+            targetEntity: Subpregunta
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_subpregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

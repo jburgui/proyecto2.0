@@ -1,0 +1,33 @@
+# app/config/security.yml
+security:
+    firewalls:
+        secured_area:
+            pattern:    ^/
+            anonymous: ~
+            form_login:
+                login_path:  login
+                check_path:  login_check
+                failure_path: /login
+            logout:
+                path:   /logout
+                target: / 
+                invalidate_session: false
+    access_control:
+      
+        - { path: ^/admin/adjetivo/.*/delete, roles: ROLE_ADMIN }
+        - { path: ^/admin/fragmento/.*/delete, roles: ROLE_ADMIN }
+        - { path: ^/admin/informe/.*/delete, roles: ROLE_ADMIN }
+        - { path: ^/admin/usuario, roles: ROLE_ADMIN }
+        - { path: ^/admin/estudio/.*/show, roles: [ROLE_ADMIN, ROLE_INVEST] }
+        - { path: ^/admin/estudio/exportar, roles: [ROLE_ADMIN, ROLE_INVEST] }
+        - { path: ^/admin/estudio/.*/.*, roles: ROLE_ADMIN }
+        - { path: ^/admin/estudio/.*, roles: [ROLE_ADMIN, ROLE_INVEST] }
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_INVEST] }
+    providers:
+        main:
+            entity: { class: proyecto\backendBundle\Entity\Usuario, property: nombre }
+
+    encoders:
+        proyecto\backendBundle\Entity\Usuario: 
+          algorithm: bcrypt
+          cost:      15

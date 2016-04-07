@@ -1,0 +1,94 @@
+{% extends 'proyectofrontendBundle:Test:Inicio.html.twig' %}
+
+{% block contenido %}
+    <div class="titulo">
+        <h1> {{ titulo }} </h1>
+    </div>
+    <div class="info-Seccion">
+        <label>Seccion {{ barSeccion.seccion }} de {{ barSeccion.total }} </label>
+        <div class="progress progress-success medio50 ">
+            <div class="bar" style="width: {{ barSeccion.porcentaje }}"></div>
+        </div>
+        <h3>RECREO</h3>
+    </div>
+    <object data=" {{ path('uno') }} " width="100%" height="70%">     
+        <embed wmode="transparent" src=" {{ path('uno') }} " width="100%" height="70%" /> 
+        Error: No se puede mostrar el juego. Por favor actualice su navegador a una versión más reciente
+    </object>
+{% endblock %}
+
+{#Bloque footer#}
+{% block footer %}
+    <footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark" style="height: 88px;">
+        <div class="row">
+            <div class=" align-left span6">
+                <a id="salir" class="win-command">
+                  <span class="win-commandimage win-commandring">!</span>
+                  <span class="win-label">Salir</span>
+               </a>
+                    <a id="reiniciar" class="win-command">
+                    <span class="win-commandimage win-commandring"></span>
+                    <span class="win-label">Reiniciar</span>
+                </a>
+            </div>
+            <div class="align-right span6">
+                <a id="siguiente" class="win-command hidden" onclick="location.href='{{path('desarrollo')}}'">
+                  <span class="win-commandimage win-commandring"></span>
+                  <span class="win-label">Siguiente</span>
+               </a>
+                
+            </div>
+        </div>
+            <!--cuadros de dialogo para avisar al salir o reiniciar -->
+        <div id="dialog-salir" title="Mensaje de confirmación">
+        ¿Seguro que quiere volver a la página principal? Los datos se perderán.
+        </div>​
+        <div id="dialog-reiniciar" title="Mensaje de confirmación">
+            ¿Seguro que quiere volver a la página de inicio? Los datos se perderán.
+        </div>​
+        <script>
+            $("#dialog-salir").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons : {
+                     "Confirmar" : function() {
+                         location.href='{{path('homepage')}}';
+                     },
+                     "Cancelar" : function() {
+                       $(this).dialog("close");
+                     }
+                 }
+            });
+            $("#salir").on("click", function(e) {
+                e.preventDefault();
+                $("#dialog-salir").dialog("open");
+                $('.ui-dialog-titlebar-close').remove();
+            });
+            $("#dialog-reiniciar").dialog({
+                autoOpen: false,
+                modal: true,
+                buttons : {
+                     "Confirmar" : function() {
+                         location.href='{{path('inicio')}}';
+                     },
+                     "Cancelar" : function() {
+                       $(this).dialog("close");
+                     }
+                 }
+            });
+            $("#reiniciar").on("click", function(e) {
+                e.preventDefault();
+                $("#dialog-reiniciar").dialog("open");
+                $('.ui-dialog-titlebar-close').remove();
+            });
+            //si no soporta html5 cambiamos el atributo position
+            $(document).ready(function() {
+                if(!Modernizr.inputtypes.date){
+                    $("footer").css("position", "relative");
+                }
+            });
+        </script>
+    </footer>
+    
+    
+{% endblock %}

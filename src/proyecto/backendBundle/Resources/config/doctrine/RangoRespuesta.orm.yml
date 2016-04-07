@@ -1,0 +1,31 @@
+proyecto\backendBundle\Entity\RangoRespuesta:
+    type: entity
+    table: rango_respuesta
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        rangoMax:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: rango_max
+        rangoMin:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: rango_min
+    manyToOne:
+        idSubpregunta:
+            targetEntity: Subpregunta
+            cascade: {  }
+            inversedBy: rangosRespuesta
+            joinColumns:
+                id_subpregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

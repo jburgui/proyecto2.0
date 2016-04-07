@@ -1,0 +1,86 @@
+<div id="frame" class="marginBottom">
+    <h1>Editar Usuario</h1>
+
+    <form id="editar" action="{{ path('usuario_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }} novalidate>
+        <input type="hidden" name="_method" value="PUT" />
+        <div class="control-group {% if edit_form.nombre.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.nombre) }}
+            <div class="controls">
+                {{ form_widget(edit_form.nombre) }}        
+                <span class="help-inline">{{ form_errors(edit_form.nombre) }} </span>       
+            </div>
+        </div>    
+        <div class="control-group {% if edit_form.contrasena.first.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.contrasena.first) }}
+            <div class="controls">
+                {{ form_widget(edit_form.contrasena.first) }}        
+                <span class="help-inline">{{ form_errors(edit_form.contrasena.first) }} </span>       
+            </div>
+            {{ form_label(edit_form.contrasena.second) }}
+            <div class="controls">
+                {{ form_widget(edit_form.contrasena.second) }}        
+                <span class="help-inline">{{ form_errors(edit_form.contrasena.second) }} </span>       
+            </div>
+        </div> 
+        <div class="control-group {% if edit_form.rol.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.rol) }}
+            <div class="controls">
+                {{ form_widget(edit_form.rol) }}        
+                <span class="help-inline">{{ form_errors(edit_form.rol) }} </span>       
+            </div>
+        </div> 
+        <div class="control-group {% if edit_form.email.vars.errors|length %}error{% endif %}">
+            {{ form_label(edit_form.email) }}
+            <div class="controls">
+                {{ form_widget(edit_form.email) }}        
+                <span class="help-inline">{{ form_errors(edit_form.email) }} </span>       
+            </div>
+        </div> 
+        {{ form_rest(edit_form) }} 
+        <p>
+            <button id="bottomcrear" class="cargando hide" type="submit">Editar</button>
+        </p>
+    </form>
+
+    <ul class="record_actions form-actions hide">
+        <li>
+            <form>
+                <button id="volver" class="btn-info" onclick="cargarEnGestion('{{ path('usuario') }}')">
+                    Volver a la lista
+                </button>
+            </form>
+        </li>
+    </ul>
+    <script>
+        var params= {target:'.gestion'}; 
+        $('#editar').ajaxForm(params); 
+        $('#eliminar').ajaxForm(params); 
+        //para que los botones del formularios carguen el la ventana "cargando"
+        $(document).ready(function(){
+            $('.cargando').click(function() {  
+                ocultarid('gestion');
+                mostrarid('cargando');
+            });
+        });
+    </script>
+    <script>
+        ocultarid('cargando');
+        mostrarid('gestion');
+    </script>
+</div>
+
+<footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+    <div class="row">
+        <div class=" align-center">
+                <button id="bottomcrear2" class="win-command" onclick="$('#bottomcrear').click();">
+                    <span class="win-commandimage win-commandring">R</span>
+                    <span class="win-label">Guardar</span>
+                </button>
+            <button class="win-command" onclick="$('#volver').click();">
+                <span class="win-commandimage win-commandring"></span>
+                <span class="win-label">Volver a la lista</span>
+            </button>
+
+        </div>
+    </div>
+</footer>

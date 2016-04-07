@@ -1,0 +1,36 @@
+proyecto\frontendBundle\Entity\RangoRespuesta:
+    type: entity
+    table: rango_respuesta
+    uniqueConstraints:
+        id_subpregunta:
+            columns:
+                - id_subpregunta
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        idSubpregunta:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: id_subpregunta
+        rangoMax:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: rango_max
+        rangoMin:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: rango_min
+    lifecycleCallbacks: {  }

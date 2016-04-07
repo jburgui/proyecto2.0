@@ -1,0 +1,49 @@
+proyecto\backendBundle\Entity\Subpregunta:
+    type: entity
+    table: subpregunta
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        numSubpregunta:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_subpregunta
+        subpregunta:
+            type: string
+            length: 255
+            fixed: false
+            nullable: true
+    manyToOne:
+        idPregunta:
+            targetEntity: Pregunta
+            cascade: {  }
+            inversedBy: Subpreguntas
+            joinColumns:
+                id_pregunta:
+                    referencedColumnName: id
+            orphanRemoval: false
+        idTipoRespuesta:
+            targetEntity: TipoRespuesta
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_tipo_respuesta:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        rangosRespuesta:
+            targetEntity: RangoRespuesta
+            mappedBy: idSubpregunta
+            cascade: [persist]
+        opcionesRespuesta:
+            targetEntity: OpcionRespuesta
+            mappedBy: idSubpregunta
+            cascade: [persist]
+    lifecycleCallbacks: {  }

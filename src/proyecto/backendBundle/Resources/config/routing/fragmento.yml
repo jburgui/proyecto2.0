@@ -1,0 +1,31 @@
+
+fragmento_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "proyectobackendBundle:Fragmento:show" }
+
+fragmento_new:
+    pattern:  /new
+    defaults: { _controller: "proyectobackendBundle:Fragmento:new" }
+
+fragmento_create:
+    pattern:  /create
+    defaults: { _controller: "proyectobackendBundle:Fragmento:create" }
+    requirements: { _method: post }
+
+fragmento_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "proyectobackendBundle:Fragmento:edit" }
+
+fragmento_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "proyectobackendBundle:Fragmento:update" }
+    requirements: { _method: post|put }
+
+fragmento_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "proyectobackendBundle:Fragmento:delete" }
+    requirements: { _method: post|delete }
+
+fragmento:
+    pattern:  /{page}
+    defaults: { _controller: "proyectobackendBundle:Fragmento:index", page: 1 }

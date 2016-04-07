@@ -1,0 +1,97 @@
+<div id="frame"  class="marginBottom">
+    <h1>Creación de Adjetivo</h1>
+
+    <form id="crear" action="{{ path('adjetivo_create') }}" method="post" {{ form_enctype(form) }} novalidate>
+        <div class="control-group {% if form.nombre.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.nombre) }}
+            <div class="controls">
+                {{ form_widget(form.nombre) }}        
+                <span class="help-inline">{{ form_errors(form.nombre) }} </span>       
+            </div>
+        </div>  
+        <div class="control-group {% if form.tipo.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.tipo) }}
+            <div class="controls">
+                {{ form_widget(form.tipo) }}        
+                <span class="help-inline">{{ form_errors(form.tipo) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if form.frecTeorica.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.frecTeorica) }}
+            <div class="controls">
+                {{ form_widget(form.frecTeorica) }}        
+                <span class="help-inline">{{ form_errors(form.frecTeorica) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if form.numLetras.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.numLetras) }}
+            <div class="controls">
+                {{ form_widget(form.numLetras) }}        
+                <span class="help-inline">{{ form_errors(form.numLetras) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if form.numSilabas.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.numSilabas) }}
+            <div class="controls">
+                {{ form_widget(form.numSilabas) }}        
+                <span class="help-inline">{{ form_errors(form.numSilabas) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if form.categoria.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.categoria) }}
+            <div class="controls">
+                {{ form_widget(form.categoria) }}        
+                <span class="help-inline">{{ form_errors(form.categoria) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if form.frecUsoComoAdj.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.frecUsoComoAdj) }}
+            <div class="controls">
+                {{ form_widget(form.frecUsoComoAdj) }}        
+                <span class="help-inline">{{ form_errors(form.frecUsoComoAdj) }} </span>       
+            </div>
+        </div>  
+            <div class="control-group {% if form.numSignificados.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.numSignificados) }}
+            <div class="controls">
+                {{ form_widget(form.numSignificados) }}        
+                <span class="help-inline">{{ form_errors(form.numSignificados) }} </span>       
+            </div>
+        </div>  
+        {{ form_rest(form) }} 
+        <p>
+            <button id="bottomcrear" class="cargando hide" type="submit">Crear</button>
+        </p>
+        <script> 
+            var nombre = document.getElementById("proyecto_backendbundle_adjetivotype_nombre");
+            nombre.addEventListener("change", function(){longitud_campouno_en_campodos("proyecto_backendbundle_adjetivotype_nombre","proyecto_backendbundle_adjetivotype_numLetras")});
+            
+        </script>
+    </form>
+
+    <ul class="record_actions hide">
+        <li>
+            <a id="volver" href="#" onclick="cargarEnGestion('{{ path('adjetivo') }}')">
+                Volver a la lista
+            </a>
+        </li>
+    </ul>
+    <script>
+        cargarYmostrar();
+    </script>
+</div>
+
+<footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+    <div class="row">
+        <div class=" align-center">
+                <button id="bottomcrear2" class="win-command" onclick="$('#bottomcrear').click();">
+                    <span class="win-commandimage win-commandring">R</span>
+                    <span class="win-label">Crear</span>
+                </button>
+            <button class="win-command" onclick="$('#volver').click();">
+                <span class="win-commandimage win-commandring"></span>
+                <span class="win-label">Volver a la lista</span>
+            </button>
+        </div>
+    </div>
+</footer>

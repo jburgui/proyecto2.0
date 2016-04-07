@@ -1,0 +1,93 @@
+<div id="frame"  class="marginBottom">
+    <h1>Adjetivo</h1>
+
+    <table class="tabla record_properties row-fluid">
+        <tbody>
+            <tr>
+                <th>Id: </th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre: </th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Tipo: </th>
+                <td>{{ entity.tipo }}</td>
+            </tr>
+            <tr>
+                <th>Frec. teorica: </th>
+                <td>{{ entity.frecTeorica }}</td>
+            </tr>
+            <tr>
+                <th>Número de letras: </th>
+                <td>{{ entity.numLetras }}</td>
+            </tr>
+            <tr>
+                <th>Número de sílabas: </th>
+                <td>{{ entity.numSilabas }}</td>
+            </tr>
+            <tr>
+                <th>Categoría: </th>
+                <td>{{ entity.categoria }}</td>
+            </tr>
+            <tr>
+                <th>Frec. de uso como adjetivo: </th>
+                <td>{{ entity.frecUsoComoAdj }}</td>
+            </tr>
+            <tr>
+                <th>Número de significados: </th>
+                <td>{{ entity.numSignificados }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="record_actions form-actions">
+        <li>
+            <form>
+                <button class="btn-info" onclick="cargarEnGestion('{{ path('adjetivo') }}')">
+                    Volver a la lista
+                </button>
+            </form>
+        </li>
+        {% if admin==true %}  
+            <li>
+                <form id="eliminar" action="{{ path('adjetivo_delete', { 'id': entity.id }) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    {{ form_widget(delete_form) }}
+                    <button class="cargando" type="submit">Eliminar Adjetivo</button>
+                </form>
+            </li>
+        {% endif %}
+        <li>
+            <button class="btn-inverse" onclick="cargarEnGestion('{{ path('adjetivo_edit', { 'id': entity.id }) }}');">
+                Editar
+            </button>
+        </li>
+    </ul>
+    <div id="dialog-eliminar" title="Mensaje de confirmación">
+        ¿Seguro que quiere eliminar este adjetivo?
+    </div>​
+    <script>
+        $("#dialog-eliminar").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons : {
+                 "Confirmar" : function() {
+                     return true;
+                 },
+                 "Cancelar" : function() {
+                   $(this).dialog("close");
+                   cargarYmostrar();
+                   return false;
+                 }
+             }
+        });
+        $(".cargando").on("click", function(e) {
+            e.preventDefault();
+            $("#dialog-eliminar").dialog("open");
+            $('.ui-dialog-titlebar-close').remove();
+        });
+        cargarYmostrar();
+    </script>
+</div>      

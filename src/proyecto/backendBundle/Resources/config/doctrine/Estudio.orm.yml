@@ -1,0 +1,44 @@
+proyecto\backendBundle\Entity\Estudio:
+    type: entity
+    table: estudio
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        nombre:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        numSecciones:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_secciones
+        numDatosEstudio:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: num_datos_estudio
+        descripcion:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        activa:
+            type: boolean
+            nullable: false
+    oneToMany:
+        partesEstudio:
+            targetEntity: ParteEstudio
+            mappedBy: idEstudio
+            cascade: [persist]
+        distracciones:
+            targetEntity: Distraccion
+            mappedBy: idEstudio
+            cascade: [persist]
+    lifecycleCallbacks: {  }

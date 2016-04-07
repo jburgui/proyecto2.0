@@ -1,0 +1,7 @@
+parameters:
+#    proyectobackend.example.class: proyecto\backendBundle\Example
+
+services:
+#    proyectobackend.example:
+#        class: %proyectobackend.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

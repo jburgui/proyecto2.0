@@ -1,0 +1,242 @@
+# src/BlogBundle/Resources/config/validation.yml
+proyecto\backendBundle\Entity\Usuario:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: {fields: nombre, message: El usuario ya existe}
+    properties:
+        nombre:
+            - NotBlank: ~
+        contrasena:
+            - NotBlank: ~
+        rol:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email:
+                message: El email "{{ value }}" no es un email válido.
+                checkMX: true
+                
+proyecto\backendBundle\Entity\Adjetivo:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: {fields: nombre, message: El adjetivo ya existe}
+    properties:
+        nombre:
+            - NotBlank: ~
+            - Length:
+                max: 15
+                maxMessage: "Error: No más de {{ limit }} caracteres."
+            - Regex:
+                pattern: "/\d/"
+                match:   false
+                message: Este campo no acepta números ni símbolos
+        tipo:
+            - NotBlank: ~
+            - Length:
+                max: 15
+                maxMessage: "Error: No más de {{ limit }} caracteres."
+            - Regex:
+                pattern: "/\d/"
+                match:   false
+                message: Este campo no acepta números
+        frecTeorica:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 100
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 100
+        numLetras:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 20
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 20
+        numSilabas:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 10
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 10
+        categoria:
+            - NotBlank: ~
+            - Length:
+                max: 15
+                maxMessage: "Error: No más de {{ limit }} caracteres"
+        frecUsoComoAdj:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 100
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 100
+        numSignifacados:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 10
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 10
+proyecto\backendBundle\Entity\Fragmento:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: {fields: idAdjetivo, message: Ya existe un fragmento con este adjetivo}
+    properties:
+        nombre:
+            - NotBlank: ~
+            - Length:
+                max: 30
+                maxMessage: "Error: No más de {{ limit }} caracteres."
+            - Regex:
+                pattern: /[^a-záéíóúñ_ ]/i 
+                match:   false
+                message: Este campo solo acepta letras, "_" y " "
+        ratioDadasEliminadas:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 100
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 100
+        letrasDadas:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 20
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 20
+        ratioVocalesConsonantes:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 10
+                minMessage: Error - Rango mínimo 0
+                maxMessage: Error - Rango máximo 10
+        idAdjetivo:
+            - NotBlank: ~
+            - NotNull: ~
+
+proyecto\backendBundle\Entity\Estudio:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: {fields: nombre, message: Este nombre ya existe}
+    properties:
+        nombre:
+            - NotBlank: ~
+        numSecciones:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Debe haber al menos una parte. , invalidMessage: Este campo debe ser un número. }
+        numDatosEstudio:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Debe haber al menos un dato de estudio. , invalidMessage: Este campo debe ser un número. }
+        descripcion:
+            - NotBlank: ~
+            - MaxLength: 255
+        partesEstudio:
+            - Count:
+                min: 1
+                minMessage: "ERROR: Debe haber al menos una parte."
+            - Valid: ~
+        distracciones:
+            - Valid: ~
+
+proyecto\backendBundle\Entity\ParteEstudio:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: {fields: nombre, message: Este nombre ya existe}
+    properties:
+        nombre:
+            - NotBlank: ~
+        numOrden:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Elija un numero entero. , invalidMessage: Este campo debe ser un número. }
+        numPreguntas:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Debe haber al menos una pregunta . , invalidMessage: Este campo debe ser un número. }
+        titulo:
+            - NotBlank: ~
+            - MaxLength: 255
+        numPreguntasDePrueba:
+            - NotBlank: ~
+            - Min: { limit: 0, message: Indique un numero entero. , invalidMessage: Este campo debe ser un número. }
+        idTipoPregunta:
+            - NotBlank: ~
+            - NotNull: ~
+        pantallasBienvenida:
+            - Count:
+                max: 1
+                maxMessage: "Error: Solo puede haber un mensaje de bienvenida por parte. "
+            - Valid: ~
+        preguntas:
+            - Count:
+                min: 1
+                minMessage: "ERROR: Debe haber al menos una pregunta en cada parte."
+            - Valid: ~
+proyecto\backendBundle\Entity\PantallaBienvenida:
+    properties:
+        mensaje:
+            - NotBlank: ~
+proyecto\backendBundle\Entity\Pregunta:
+    properties:
+        numPregunta:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Elija un numero entero mayor que 0. , invalidMessage: Este campo debe ser un número. }
+        repetirPregunta:
+            - NotBlank: ~
+            - Min: { limit: 0, message: Elija un numero entero mayor o igual que 0. , invalidMessage: Este campo debe ser un número. }
+        numSubpreguntas:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Debe haber al menos una subpregunta. , invalidMessage: Este campo debe ser un número. }
+        subpreguntas:
+            - Count:
+                min: 1
+                minMessage: "ERROR: Debe haber al menos una subpregunta en cada pregunta."
+            - Valid: ~
+proyecto\backendBundle\Entity\Subpregunta:
+    properties:
+        numSubpregunta:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Elija un numero entero mayor que 0. , invalidMessage: Este campo debe ser un número. }
+        idTipoRespuesta:
+            - NotBlank: ~
+        rangosRespuesta:
+            - Valid: ~
+        opcionesRespuesta:
+            - Valid: ~
+proyecto\backendBundle\Entity\RangoRespuesta:
+    properties:
+        rangoMax:
+            - NotBlank: ~
+        rangoMin:
+            - NotBlank: ~
+proyecto\backendBundle\Entity\OpcionRespuesta:
+    properties:
+        valor:
+            - NotBlank: ~
+proyecto\backendBundle\Entity\Distraccion:
+    properties:
+        numOrden:
+            - NotBlank: ~
+            - Min: { limit: 1, message: Elija un numero entero mayor que 0. , invalidMessage: Este campo debe ser un número. }
+            
+proyecto\backendBundle\Entity\Informe:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: {fields: tituloGrafico, message: El título ya existe}
+    properties:
+        idParteEstudio: 
+            - NotBlank: ~
+        tituloGrafico:
+            
+        columnas:
+            - Count:
+                min: 1
+                minMessage: "ERROR: Debe haber al menos una columna en cada informe."
+            - valid: ~
+            
+proyecto\backendBundle\Entity\Columna:
+    properties:
+        nombreColumna:
+            - NotBlank: ~
+        tratamiento:
+            - NotBlank: ~
+        idSubpregunta:
+            - NotBlank: ~
+        grafica:
+            - NotBlank: ~

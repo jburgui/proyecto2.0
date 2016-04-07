@@ -1,0 +1,74 @@
+proyecto\frontendBundle\Entity\Fragmento:
+    type: entity
+    table: fragmento
+    indexes:
+        id_adjetivo:
+            columns:
+                - id_adjetivo
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        nombre:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+            comment: ''
+        primeraLetra:
+            type: boolean
+            nullable: false
+            comment: ''
+            column: primera_letra
+        ultimaLetra:
+            type: boolean
+            nullable: false
+            comment: ''
+            column: ultima_letra
+        dosEspaciosJuntos:
+            type: boolean
+            nullable: false
+            comment: ''
+            column: dos_espacios_juntos
+        tresLetrasJuntas:
+            type: boolean
+            nullable: false
+            comment: ''
+            column: tres_letras_juntas
+        ratioDadasEliminadas:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            column: ratio_dadas_eliminadas
+        letrasDadas:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            column: letras_dadas
+        ratioVocalesConsonantes:
+            type: float
+            nullable: false
+            precision: 10
+            scale: 0
+            comment: ''
+            column: ratio_vocales_consonantes
+    manyToOne:
+        idAdjetivo:
+            targetEntity: Adjetivo
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id_adjetivo:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

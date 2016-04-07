@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+        <meta charset="UTF-8" />
+        <title>{% block title %}SPECIAL MEMORY TEST v2.0{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/bootstrap.css')}}" />
+        <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/icomoon.css')}}" />
+        
+        <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/bootmetro-tiles.css')}}" />
+        <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/bootmetro.css')}}" />
+        <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/metro-ui-light.css')}}" />
+        <link type="text/css" rel="stylesheet" href="{{asset('bundles/proyectobackend/css/bootmetro-charms.css')}}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="{{asset('bundles/proyectobackend/js/bootstrap.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/proyectobackend/js/modernizr.js')}}"></script>
+        {% block javascripts %}{% endblock %}
+        
+        {% endblock %}
+    </head>
+    {% block bodyevent %}<body style="overflow: hidden">{% endblock %}
+        {% block body %}
+            {% block fondo %}<div class="fondo">{% endblock %}
+                {% block header %}
+                    <div class="page-header" style="text-align: center;">
+                        <a onclick="location.href='{{path('logout')}}'">
+                            <img src="{{asset('bundles/proyectobackend/images/cabecera2.png')}}" alt="" style="max-height: 150px;">
+                        </a>
+                    </div>
+                {% endblock %}
+                {% block center %}{% endblock %}
+                {% block footer %}{% endblock %}
+            {% block finfondo %}</div>{% endblock %}
+        {% endblock %}
+        
+    </body>
+</html>

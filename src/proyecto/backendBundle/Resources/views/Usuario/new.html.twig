@@ -1,0 +1,84 @@
+
+<div id="frame" class="marginBottom">
+    <h1>Creación de usuario</h1>
+
+    <form id="crear" action="{{ path('usuario_create') }}" method="post" {{ form_enctype(form) }} novalidate>
+        <div class="control-group {% if form.nombre.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.nombre) }}
+            <div class="controls">
+                {{ form_widget(form.nombre) }}        
+                <span class="help-inline">{{ form_errors(form.nombre) }} </span>       
+            </div>
+        </div>    
+        <div class="control-group {% if form.contrasena.first.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.contrasena.first) }}
+            <div class="controls">
+                {{ form_widget(form.contrasena.first) }}        
+                <span class="help-inline">{{ form_errors(form.contrasena.first) }} </span>       
+            </div>
+            {{ form_label(form.contrasena.second) }}
+            <div class="controls">
+                {{ form_widget(form.contrasena.second) }}        
+                <span class="help-inline">{{ form_errors(form.contrasena.second) }} </span>       
+            </div>
+        </div> 
+        <div class="control-group {% if form.rol.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.rol) }}
+            <div class="controls">
+                {{ form_widget(form.rol) }}        
+                <span class="help-inline">{{ form_errors(form.rol) }} </span>       
+            </div>
+        </div> 
+        <div class="control-group {% if form.email.vars.errors|length %}error{% endif %}">
+            {{ form_label(form.email) }}
+            <div class="controls">
+                {{ form_widget(form.email) }}        
+                <span class="help-inline">{{ form_errors(form.email) }} </span>       
+            </div>
+        </div> 
+            {{ form_rest(form) }} 
+        <p>
+            <button id="bottomcrear" class="cargando hide" type="submit">Crear</button>
+        </p>
+    </form>
+
+    <ul class="record_actions hide">
+        <li>
+            <a id="volver" href="#" onclick="cargarEnGestion('{{ path('usuario') }}')">
+                Volver a la lista
+            </a>
+        </li>
+    </ul>
+    <script>
+        //para que el form cargue al filtrar en "gestion"
+        var params= {target:'.gestion'}; 
+        $('#crear').ajaxForm(params); 
+        //para que los botones del formularios carguen el la ventana "cargando"
+        $(document).ready(function(){
+            $('.cargando').click(function() {  
+                ocultarid('gestion');
+                mostrarid('cargando');
+            });
+        });
+    </script>
+    <script>
+        //para ocultar la ventana "cargando"
+        ocultarid('cargando');
+        mostrarid('gestion');
+    </script>
+</div>
+
+<footer class="win-commandlayout container navbar-fixed-bottom win-ui-dark heightCien" >
+    <div class="row">
+        <div class=" align-center">
+                <button id="bottomcrear2" class="win-command" onclick="$('#bottomcrear').click();">
+                    <span class="win-commandimage win-commandring">R</span>
+                    <span class="win-label">Crear</span>
+                </button>
+            <button class="win-command" onclick="$('#volver').click();">
+                <span class="win-commandimage win-commandring"></span>
+                <span class="win-label">Volver a la lista</span>
+            </button>
+        </div>
+    </div>
+</footer>
